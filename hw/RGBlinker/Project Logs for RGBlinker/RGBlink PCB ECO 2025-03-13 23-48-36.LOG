@@ -1,0 +1,16 @@
+Change Component Footprint: Designator=IC? Old Footprint=QFN50P500X500X60-33N-D New Footprint=UFQFPN32-5x5
+Added Component: Designator=J?(TC2050)
+Added Component: Designator=S?(TS18525SL260SMTTR)
+Add component (AddParameter): Name = "Arrow Part Number"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Arrow Price/Stock"; Value = ""; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Datasheet Link"; Value = "https://www.sameskydevices.com/product/resource/supplyframepdf/ts18.pdf"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Height"; Value = "2.7mm"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Name"; Value = "Same Sky"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Part_Number"; Value = "TS18-5-25-SL-260-SMT-TR"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser Part Number"; Value = "179-TS18525SL260SMTT"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser Price/Stock"; Value = "https://www.mouser.co.uk/ProductDetail/Same-Sky/TS18-5-25-SL-260-SMT-TR?qs=tlsG%2FOw5FFh0yS4gYnfcwg%3D%3D"; VariantName = "[No Variations]"
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component J? TC2050
+Added Member To Class: ClassName=Main Member=Component S? TS18-5-25-SL-260-SMT-TR

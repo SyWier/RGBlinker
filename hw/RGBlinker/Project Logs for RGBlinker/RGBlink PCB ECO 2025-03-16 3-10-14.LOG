@@ -1,0 +1,38 @@
+Added Component: Designator=H?(BATHLD006SMT)
+Add component (AddParameter): Name = "Arrow Part Number"; Value = "BAT-HLD-006-SMT"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Arrow Price/Stock"; Value = "https://www.arrow.com/en/products/bat-hld-006-smt/te-connectivity?utm_currency=USD&region=nac"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Datasheet Link"; Value = "https://www.te.com/commerce/DocumentDelivery/DDEController?Action=showdoc&DocId=Customer+Drawing%7FC-BAT-HLD-006-SMT%7FA%7Fpdf%7FEnglish%7FENG_CD_C-BAT-HLD-006-SMT_A.pdf%7FBAT-HLD-006-SMT"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Height"; Value = "6.7mm"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Name"; Value = "TE Connectivity"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Part_Number"; Value = "BAT-HLD-006-SMT"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser Part Number"; Value = "712-BAT-HLD-006-SMT"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser Price/Stock"; Value = "https://www.mouser.co.uk/ProductDetail/TE-Connectivity-Linx-Technologies/BAT-HLD-006-SMT?qs=TuK3vfAjtkUyTQHMSqIP6A%3D%3D"; VariantName = "[No Variations]"
+Add Net: Net with name "NetD?_1" already exists
+Add Net: Net with name "NetD?_1" already exists
+Add Net: Net with name "NetD?_1" already exists
+Add Net: Net with name "NetD?_2" already exists
+Add Net: Net with name "NetD?_2" already exists
+Add Net: Net with name "NetD?_2" already exists
+Add Net: Net with name "NetD?_3" already exists
+Add Net: Net with name "NetD?_3" already exists
+Add Net: Net with name "NetD?_3" already exists
+Add Net: Net with name "NetD?_4" already exists
+Add Net: Net with name "NetD?_4" already exists
+Add Net: Net with name "NetD?_4" already exists
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component H? BAT-HLD-006-SMT
+Added Member To Class: ClassName=Main Member=Component J? TC2050

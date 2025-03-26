@@ -1,0 +1,82 @@
+Added Component: Designator=D?(UHD111A-FKA-C3K23E1L3VG5ZB3Z3)
+Added Component: Designator=D?(UHD111A-FKA-C3K23E1L3VG5ZB3Z3)
+Added Component: Designator=D?(UHD111A-FKA-C3K23E1L3VG5ZB3Z3)
+Added Component: Designator=D?(UHD111A-FKA-C3K23E1L3VG5ZB3Z3)
+Added Component: Designator=D?(UHD111A-FKA-C3K23E1L3VG5ZB3Z3)
+Added Component: Designator=D?(UHD111A-FKA-C3K23E1L3VG5ZB3Z3)
+Added Component: Designator=D?(UHD111A-FKA-C3K23E1L3VG5ZB3Z3)
+Added Component: Designator=D?(UHD111A-FKA-C3K23E1L3VG5ZB3Z3)
+Added Component: Designator=D?(UHD111A-FKA-C3K23E1L3VG5ZB3Z3)
+Added Component: Designator=D?(UHD111A-FKA-C3K23E1L3VG5ZB3Z3)
+Added Component: Designator=D?(UHD111A-FKA-C3K23E1L3VG5ZB3Z3)
+Added Component: Designator=D?(UHD111A-FKA-C3K23E1L3VG5ZB3Z3)
+Added Pin To Net: NetName=GND Pin=IC?-5
+Added Pin To Net: NetName=GND Pin=IC?-33
+Added Pin To Net: NetName=GND Pin=J?-2
+Added Pin To Net: NetName=GND Pin=J?-3
+Added Pin To Net: NetName=GND Pin=J?-4
+Added Pin To Net: NetName=GND Pin=J?-5
+Added Net: Name=GND
+Added Pin To Net: NetName=NetD?_1 Pin=D?-1
+Added Pin To Net: NetName=NetD?_1 Pin=D?-1
+Added Pin To Net: NetName=NetD?_1 Pin=D?-1
+Added Pin To Net: NetName=NetD?_1 Pin=D?-1
+Added Net: Name=NetD?_1
+Add Net: Net with name "NetD?_1" already exists
+Add Net: Net with name "NetD?_1" already exists
+Add Net: Net with name "NetD?_1" already exists
+Added Pin To Net: NetName=NetD?_2 Pin=D?-2
+Added Pin To Net: NetName=NetD?_2 Pin=D?-2
+Added Pin To Net: NetName=NetD?_2 Pin=D?-2
+Added Pin To Net: NetName=NetD?_2 Pin=D?-2
+Added Net: Name=NetD?_2
+Add Net: Net with name "NetD?_2" already exists
+Add Net: Net with name "NetD?_2" already exists
+Add Net: Net with name "NetD?_2" already exists
+Added Pin To Net: NetName=NetD?_3 Pin=D?-3
+Added Pin To Net: NetName=NetD?_3 Pin=D?-3
+Added Pin To Net: NetName=NetD?_3 Pin=D?-3
+Added Pin To Net: NetName=NetD?_3 Pin=D?-3
+Added Net: Name=NetD?_3
+Add Net: Net with name "NetD?_3" already exists
+Add Net: Net with name "NetD?_3" already exists
+Add Net: Net with name "NetD?_3" already exists
+Added Pin To Net: NetName=NetD?_4 Pin=D?-4
+Added Pin To Net: NetName=NetD?_4 Pin=D?-4
+Added Pin To Net: NetName=NetD?_4 Pin=D?-4
+Added Pin To Net: NetName=NetD?_4 Pin=D?-4
+Added Net: Name=NetD?_4
+Add Net: Net with name "NetD?_4" already exists
+Add Net: Net with name "NetD?_4" already exists
+Add Net: Net with name "NetD?_4" already exists
+Added Pin To Net: NetName=NRST Pin=IC?-6
+Added Pin To Net: NetName=NRST Pin=J?-6
+Added Net: Name=NRST
+Added Pin To Net: NetName=SWCLK Pin=IC?-25
+Added Pin To Net: NetName=SWCLK Pin=J?-9
+Added Net: Name=SWCLK
+Added Pin To Net: NetName=SWDIO Pin=IC?-24
+Added Pin To Net: NetName=SWDIO Pin=J?-10
+Added Net: Name=SWDIO
+Added Pin To Net: NetName=VCC Pin=IC?-4
+Added Pin To Net: NetName=VCC Pin=J?-1
+Added Net: Name=VCC
+Added Pin To Net: NetName=WKUP Pin=IC?-7
+Added Net: Name=WKUP
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Rule: Name=Schematic Supply Nets
+Added Rule: Name=Schematic Supply Nets_1

@@ -1,0 +1,46 @@
+Removed Pin From Net: NetName=GND Pin=J?-2
+Removed Pin From Net: NetName=GND Pin=J?-4
+Removed Pin From Net: NetName=NRST Pin=J?-6
+Removed Pin From Net: NetName=SWCLK Pin=J?-9
+Removed Pin From Net: NetName=SWDIO Pin=J?-10
+Added Component: Designator=U?(1053)
+Add component (AddParameter): Name = "Arrow Part Number"; Value = "1053"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Arrow Price/Stock"; Value = "https://www.arrow.com/en/products/1053/keystone-electronics"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Datasheet Link"; Value = "http://www.keyelco.com/product-pdf.cfm?p=751"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Name"; Value = "Keystone Electronics"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Part_Number"; Value = "1053"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser Part Number"; Value = "534-1053-BH"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mouser Price/Stock"; Value = "https://www.mouser.co.uk/ProductDetail/Keystone-Electronics/1053?qs=%2F7TOpeL5Mz4zfgvqwo9sng%3D%3D"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=SWDIO Pin=J?-2
+Added Pin To Net: NetName=SWCLK Pin=J?-4
+Added Pin To Net: NetName=NRST Pin=J?-10
+Add Net: Net with name "NetD?_1" already exists
+Add Net: Net with name "NetD?_1" already exists
+Add Net: Net with name "NetD?_1" already exists
+Add Net: Net with name "NetD?_2" already exists
+Add Net: Net with name "NetD?_2" already exists
+Add Net: Net with name "NetD?_2" already exists
+Add Net: Net with name "NetD?_3" already exists
+Add Net: Net with name "NetD?_3" already exists
+Add Net: Net with name "NetD?_3" already exists
+Add Net: Net with name "NetD?_4" already exists
+Add Net: Net with name "NetD?_4" already exists
+Add Net: Net with name "NetD?_4" already exists
+Added Pin To Net: NetName=SWO Pin=J?-6
+Added Net: Name=SWO
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component U? 1053

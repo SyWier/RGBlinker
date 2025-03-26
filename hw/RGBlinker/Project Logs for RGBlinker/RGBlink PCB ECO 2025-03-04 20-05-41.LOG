@@ -1,0 +1,6 @@
+Added Component: Designator=B?(Single battery cell holder)
+Added Component: Designator=D?(UHD111A-FKA-C3K23E1L3VG5ZB3Z3)
+Added Component: Designator=LED?(WS2812C-2020)
+Added Member To Class: ClassName=Main Member=Component B? Battery cell
+Added Member To Class: ClassName=Main Member=Component D? UHD111A-FKA-C3K23E1L3VG5ZB3Z3
+Added Member To Class: ClassName=Main Member=Component LED? WS2812
