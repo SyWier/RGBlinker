@@ -44,25 +44,40 @@ int _write(int file, char *ptr, int len)
 	 HAL_UART_Transmit(&huart1, ptr, len, HAL_MAX_DELAY);
 }
 
+
 // Defines
 #define LED_ROWS 4
 #define LED_NUM 9
 #define LED_CNT LED_ROWS * LED_NUM
-#define LED_PWM_MAX 255 // 0...255 -> 256 steps
+#define LED_PWM_MAX 31 // 0...15 -> 16 steps
 #define BUFFER_SIZE LED_ROWS * LED_PWM_MAX
 #define BUFFER_COUNT 2
-#define FRAME_COUNT 4
+#define FRAME_COUNT 6
 
 // Arrays and variables
 uint16_t LedBuffer[BUFFER_COUNT][BUFFER_SIZE]; // Circular DMA buffer - 2*4kB
 bool BufferSelect = 0;
 
 uint8_t LedFrame[FRAME_COUNT][LED_CNT] = {
-		{ 255, 0, 0, 0, 255, 0, 0, 0, 255, 191, 0, 0, 0, 191, 0, 0, 0, 191, 127, 0, 0, 0, 127, 0, 0, 0, 127, 63, 0, 0, 0, 63, 0, 0, 0, 63 },
-		{ 255, 0, 0, 127, 0, 0, 63, 0, 0, 255, 0, 0, 127, 0, 0, 63, 0, 0, 255, 0, 0, 127, 0, 0, 63, 0, 0, 255, 0, 0, 127, 0, 0, 63, 0, 0 },
-		{ 0, 255, 0, 0, 127, 0, 0, 63, 0, 0, 255, 0, 0, 127, 0, 0, 63, 0, 0, 255, 0, 0, 127, 0, 0, 63, 0, 0, 255, 0, 0, 127, 0, 0, 63, 0 },
-		{ 0, 0, 255, 0, 0, 127, 0, 0, 63, 0, 0, 255, 0, 0, 127, 0, 0, 63, 0, 0, 255, 0, 0, 127, 0, 0, 63, 0, 0, 255, 0, 0, 127, 0, 0, 63 }
+//		{ 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31 },
+		{ 31, 0, 0, 0, 31, 0, 0, 0, 31, 15, 0, 0, 0, 15, 0, 0, 0, 15, 7, 0, 0, 0, 7, 0, 0, 0, 7, 1, 0, 0, 0, 1, 0, 0, 0, 1 },
+		{ 15, 0, 0, 0, 15, 0, 0, 0, 15, 7, 0, 0, 0, 7, 0, 0, 0, 7, 1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 0, 0, 7, 0, 0, 0, 7 },
+		{ 7, 0, 0, 0, 7, 0, 0, 0, 7, 1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 0, 0, 7, 0, 0, 0, 7, 15, 0, 0, 0, 15, 0, 0, 0, 15 },
+		{ 1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 0, 0, 7, 0, 0, 0, 7, 15, 0, 0, 0, 15, 0, 0, 0, 15, 31, 0, 0, 0, 31, 0, 0, 0, 31 },
+		{ 7, 0, 0, 0, 7, 0, 0, 0, 7, 15, 0, 0, 0, 15, 0, 0, 0, 15, 31, 0, 0, 0, 31, 0, 0, 0, 31, 15, 0, 0, 0, 15, 0, 0, 0, 15 },
+		{ 15, 0, 0, 0, 15, 0, 0, 0, 15, 31, 0, 0, 0, 31, 0, 0, 0, 31, 15, 0, 0, 0, 15, 0, 0, 0, 15, 7, 0, 0, 0, 7, 0, 0, 0, 7 }
 };
+
+uint16_t pwmCnt = 0;
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
+    if (htim->Instance == TIM3) {
+    	GPIOA->ODR = LedBuffer[!BufferSelect][pwmCnt];
+    	pwmCnt++;
+    	if(pwmCnt >= BUFFER_SIZE) {
+    		pwmCnt = 0;
+    	}
+    }
+}
 
 // Gamma brightness lookup table <https://victornpb.github.io/gamma-table-generator>
 // gamma = 1.50 steps = 256 range = 0-255
@@ -183,7 +198,11 @@ void GenerateBuffer(uint8_t frame[LED_CNT]) {
 		for (uint16_t led = 0; led < LED_NUM; led++) { // Select LED
 
 			// PWM number between 0-255
-			uint8_t pwm = gamma_lut[frame[row * LED_NUM + led]];
+//			uint8_t pwm = gamma_lut[frame[row * LED_NUM + led]];
+			uint8_t pwm = frame[row * LED_NUM + led];
+			if(pwm > LED_PWM_MAX) {
+				pwm = LED_PWM_MAX;
+			}
 
 			// Set LED values
 			for (uint16_t n = 0; n < pwm; n++) {
@@ -198,39 +217,6 @@ void GenerateBuffer(uint8_t frame[LED_CNT]) {
 
 void LedInit() {
 	HAL_GPIO_WritePin(EN_3V3_GPIO_Port, EN_3V3_Pin, 1); // Turn on 3.3V
-}
-
-
-
-// DMA handle
-DMA_HandleTypeDef hdma_mem2gpio;
-
-void DMA_Init(void)
-{
-    __HAL_RCC_DMA1_CLK_ENABLE();
-
-    hdma_mem2gpio.Instance = DMA1_Channel1;
-    hdma_mem2gpio.Init.Direction = DMA_MEMORY_TO_PERIPH;
-    hdma_mem2gpio.Init.PeriphInc = DMA_PINC_DISABLE;
-    hdma_mem2gpio.Init.MemInc = DMA_MINC_ENABLE;
-    hdma_mem2gpio.Init.PeriphDataAlignment = DMA_PDATAALIGN_HALFWORD;
-    hdma_mem2gpio.Init.MemDataAlignment = DMA_MDATAALIGN_HALFWORD;
-    hdma_mem2gpio.Init.Mode = DMA_CIRCULAR;
-    hdma_mem2gpio.Init.Priority = DMA_PRIORITY_LOW;
-
-    if (HAL_DMA_Init(&hdma_mem2gpio) != HAL_OK)
-    {
-        printf(ESCAPE_RED "Error: DMA Initialization!\r\n");
-    }
-}
-
-void LedDrive() {
-	HAL_DMA_Abort(&hdma_mem2gpio);
-	HAL_DMA_Start(&hdma_mem2gpio, (uint32_t)LedBuffer[BufferSelect], (uint32_t)&(GPIOA->ODR), BUFFER_SIZE);
-
-//	HAL_DMA_Start(&hdma_memtomem_dma1_channel2, (uint32_t)LedBuffer[BufferSelect], (uint32_t)&(GPIOA->ODR), BUFFER_SIZE);
-//	BufferSelect = !BufferSelect;
-	BufferSelect = 0;
 }
 
 /* USER CODE END PM */
@@ -256,7 +242,6 @@ void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
     if (GPIO_Pin == BTN_Pin)
     {
     	printf(ESCAPE_GREEN "Button was pressed!\r\n");
-    	LedDrive();
     }
 }
 
@@ -319,19 +304,8 @@ int main(void)
 //  HAL_PWR_EnableWakeUpPin(PWR_WAKEUP_PIN3_HIGH);
 //  __HAL_PWR_CLEAR_FLAG(PWR_FLAG_WU);
 
-  DMA_Init();
-
   LedInit();
-//  GenerateBuffer(LedFrame[0]);
-  GenerateDummyBuffer();
-  LedDrive();
-
-  /*
-  while(insCnt < instMax) {
-	  instuctions[instCnt]();
-	  instCnt++;
-  }
-  */
+  HAL_TIM_Base_Start_IT(&htim3);
 
   printf(ESCAPE_YELLOW "Start main...\r\n");
 
@@ -343,14 +317,16 @@ int main(void)
   while (1)
   {
 	  printf(ESCAPE_WHITE "Main cnt: %d\r\n", mainCnt);
+
+	  GenerateBuffer(LedFrame[mainCnt]);
+	  BufferSelect = !BufferSelect;
+
 	  mainCnt++;
-//	  LedDrive();
-	  HAL_Delay(1000);
-//	  for(int i = 0; i < 4; i++) {
-//		  GenerateBuffer(LedFrame[i]);
-//		  LedDrive();
-//		  HAL_Delay(1000);
-//	  }
+	  if(mainCnt >= FRAME_COUNT) {
+		  mainCnt = 0;
+	  }
+
+	  HAL_Delay(100);
 
     /* USER CODE END WHILE */
 
@@ -368,14 +344,14 @@ void SystemClock_Config(void)
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 
-  __HAL_FLASH_SET_LATENCY(FLASH_LATENCY_1);
+  __HAL_FLASH_SET_LATENCY(FLASH_LATENCY_0);
 
   /** Initializes the RCC Oscillators according to the specified parameters
   * in the RCC_OscInitTypeDef structure.
   */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
-  RCC_OscInitStruct.HSIDiv = RCC_HSI_DIV1;
+  RCC_OscInitStruct.HSIDiv = RCC_HSI_DIV4;
   RCC_OscInitStruct.HSICalibrationValue = RCC_HSICALIBRATION_DEFAULT;
   if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
   {
@@ -391,7 +367,7 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.AHBCLKDivider = RCC_HCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_APB1_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_0) != HAL_OK)
   {
     Error_Handler();
   }
