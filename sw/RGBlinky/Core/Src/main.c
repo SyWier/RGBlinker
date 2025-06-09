@@ -41,7 +41,8 @@
 
 int _write(int file, char *ptr, int len)
 {
-	 HAL_UART_Transmit(&huart1, ptr, len, HAL_MAX_DELAY);
+	 HAL_UART_Transmit(&huart1, (const uint8_t*)ptr, (uint16_t)len, HAL_MAX_DELAY);
+	 return HAL_OK;
 }
 
 
@@ -68,6 +69,8 @@ uint8_t LedFrame[FRAME_COUNT][LED_CNT] = {
 		{ 15, 0, 0, 0, 15, 0, 0, 0, 15, 31, 0, 0, 0, 31, 0, 0, 0, 31, 15, 0, 0, 0, 15, 0, 0, 0, 15, 7, 0, 0, 0, 7, 0, 0, 0, 7 }
 };
 
+uint32_t adc_value = 0;
+bool adc_flag = 0;
 uint16_t pwmCnt = 0;
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
     if (htim->Instance == TIM3) {
@@ -76,6 +79,12 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
     	if(pwmCnt >= BUFFER_SIZE) {
     		pwmCnt = 0;
     	}
+    }
+
+    if(htim->Instance == TIM14) {
+		adc_value = HAL_ADC_GetValue(&hadc1);
+		HAL_ADC_Start(&hadc1);
+		adc_flag = 1;
     }
 }
 
@@ -216,8 +225,28 @@ void GenerateBuffer(uint8_t frame[LED_CNT]) {
 }
 
 void LedInit() {
+	// Init LED buffer (turn off all LEDs by default))
+	uint16_t reg = GPIOA->ODR | 0x1FFF;
+	for (uint16_t i = 0; i < BUFFER_SIZE; i++) {
+		LedBuffer[0][i] = reg;
+	}
+	for (uint16_t i = 0; i < BUFFER_SIZE; i++) {
+		LedBuffer[1][i] = reg;
+	}
+
 	HAL_GPIO_WritePin(EN_3V3_GPIO_Port, EN_3V3_Pin, 1); // Turn on 3.3V
 }
+
+uint8_t cr2032_percent(uint16_t millivolts) {
+    if (millivolts >= 3000) return 100;
+    else if (millivolts >= 2900) return 85 + (millivolts - 2900) * 15 / 100;
+    else if (millivolts >= 2800) return 60 + (millivolts - 2800) * 25 / 100;
+    else if (millivolts >= 2700) return 30 + (millivolts - 2700) * 30 / 100;
+    else if (millivolts >= 2600) return 10 + (millivolts - 2600) * 20 / 100;
+    else if (millivolts >= 2500) return (millivolts - 2500) * 10 / 100;
+    else return 0;
+}
+
 
 /* USER CODE END PM */
 
@@ -270,18 +299,36 @@ int main(void)
   MX_ADC1_Init();
   MX_USART1_UART_Init();
   MX_TIM3_Init();
+  MX_TIM14_Init();
   /* USER CODE BEGIN 2 */
+  LedInit();
+  HAL_TIM_Base_Start_IT(&htim3);
+  HAL_TIM_Base_Start_IT(&htim14);
+  /* Finished initialization */
 
+  /* Build Print Build Time */
   printf(ESCAPE_MAGENTA __DATE__ " " __TIME__ "\r\n");
+
+  /* Start  and initialize ADC conversion */
+  if (HAL_ADCEx_Calibration_Start(&hadc1) != HAL_OK) {
+	  Error_Handler(); /* Calibration Error */
+  }
+
+  HAL_ADC_Start(&hadc1);
+  HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
+
+  // Print battery voltage with no load
+  adc_value = HAL_ADC_GetValue(&hadc1);
+  uint16_t vdda = (uint16_t)( (*VREFINT_CAL_ADDR) * VREFINT_CAL_VREF / (float)adc_value);
+  printf(ESCAPE_GREEN "VDDA: %dmV" ESCAPE_NORM "\r\n", vdda);
+  printf(ESCAPE_GREEN "Percentage: %d%%" ESCAPE_NORM "\r\n", cr2032_percent(vdda));
 
   // === Enable Wake Up source
 //  HAL_PWR_EnableWakeUpPin(PWR_WAKEUP_PIN3_HIGH);
 //  __HAL_PWR_CLEAR_FLAG(PWR_FLAG_WU);
 
-  LedInit();
-  HAL_TIM_Base_Start_IT(&htim3);
-
   printf(ESCAPE_YELLOW "Start main...\r\n");
+
 
   /* USER CODE END 2 */
 
@@ -301,6 +348,13 @@ int main(void)
 	  }
 
 	  HAL_Delay(100);
+
+	  if(adc_flag) {
+		  adc_flag = 0;
+		  vdda = (uint16_t)( (*VREFINT_CAL_ADDR) * VREFINT_CAL_VREF / (float)adc_value);
+		  printf(ESCAPE_WHITE "VDDA: %dmV" ESCAPE_NORM "\r\n", vdda);
+		  printf(ESCAPE_WHITE "Percentage: %d%%" ESCAPE_NORM "\r\n", cr2032_percent(vdda));
+	  }
 
     /* USER CODE END WHILE */
 
