@@ -51,6 +51,9 @@
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+#include "button_handler.h"
+
+extern Button userBtn;
 
 /* USER CODE END 0 */
 
@@ -129,7 +132,7 @@ void SysTick_Handler(void)
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();
   /* USER CODE BEGIN SysTick_IRQn 1 */
-
+  Button_Tick(&userBtn);
   /* USER CODE END SysTick_IRQn 1 */
 }
 

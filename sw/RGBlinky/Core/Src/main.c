@@ -236,16 +236,6 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-// Called when EXTI line interrupt occurs
-void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin)
-{
-    if (GPIO_Pin == BTN_Pin)
-    {
-    	printf(ESCAPE_GREEN "Button was pressed!\r\n");
-    }
-}
-
-
 /* USER CODE END 0 */
 
 /**
@@ -282,23 +272,7 @@ int main(void)
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
 
-
   printf(ESCAPE_MAGENTA __DATE__ " " __TIME__ "\r\n");
-
-  // === Configure BTN pin (PB6) as an interrupt source ===
-  GPIO_InitTypeDef GPIO_InitStruct = {0};
-
-  // Configure PB6 as input with interrupt
-
-  GPIO_InitStruct.Pin = GPIO_PIN_6;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
-  GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
-
-  // Enable and set EXTI line interrupt
-  HAL_NVIC_SetPriority(EXTI4_15_IRQn, 0, 0);
-  HAL_NVIC_EnableIRQ(EXTI4_15_IRQn);
-  // === === ===
 
   // === Enable Wake Up source
 //  HAL_PWR_EnableWakeUpPin(PWR_WAKEUP_PIN3_HIGH);
@@ -316,7 +290,7 @@ int main(void)
   int mainCnt = 0;
   while (1)
   {
-	  printf(ESCAPE_WHITE "Main cnt: %d\r\n", mainCnt);
+//	  printf(ESCAPE_WHITE "Main cnt: %d\r\n", mainCnt);
 
 	  GenerateBuffer(LedFrame[mainCnt]);
 	  BufferSelect = !BufferSelect;
