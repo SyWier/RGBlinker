@@ -8,14 +8,18 @@
 #ifndef INC_BUTTON_HANDLER_H_
 #define INC_BUTTON_HANDLER_H_
 
-#include "stm32c0xx_hal.h"
+#include "gpio.h"
+
+#define BTN_DEBOUNCE_MS	50		// Ignore contact bounce
+#define BTN_DOUBLE_MS	250     // Max gap before 2nd click
+#define BTN_LONG_MS		2000    // Press ≥ 2.0 s
+#define BTN_VLONG_MS	5000    // Press ≥ 5.0 s
 
 typedef enum {
     BTN_IDLE,
-    BTN_DEBOUNCE_PRESS,
     BTN_PRESSED,
-    BTN_DEBOUNCE_RELEASE,
-    BTN_WAIT_SECOND
+	BTN_RELEASED,
+	BTN_DOUBLE
 } btn_state_t;
 
 typedef struct {
@@ -24,12 +28,8 @@ typedef struct {
 
     btn_state_t   state;
     uint32_t      t_stamp;
-    uint8_t       click_count;
 
-    void (*on_single)(void);
-    void (*on_double)(void);
-    void (*on_long)(void);
-    void (*on_vlong)(void);
+    void (*action)(void);
 } Button;
 
 void Button_Tick(Button *b);
