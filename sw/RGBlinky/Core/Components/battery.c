@@ -9,6 +9,7 @@
 #include "log.h"
 #include "stdio.h"
 #include "adc.h"
+#include "led.h"
 #include "stm32c0xx_hal.h"
 
 void Battery_Init() {
@@ -52,6 +53,43 @@ void Battery_Print() {
 	Log_Debug("Percentage: %d%%", Battery_Percent(millivolts));
 }
 
+#define RGB_SCALE 2
+#define RGB(r, g, b)  (b >> RGB_SCALE), (g >> RGB_SCALE), (r >> RGB_SCALE)
+void Battery_Gauge() {
+	uint8_t BatteryFrame[5][LED_CNT] = { // BGR
+		// >= 0%
+		{ RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0),
+		  RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(255, 0, 0),
+		  RGB(0, 0, 0),RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0) },
+		// >= 20%
+		{ RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0),
+		  RGB(255, 128, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(255, 0, 0),
+		  RGB(0, 0, 0),RGB(0, 0, 0), RGB(255, 128, 0), RGB(0, 0, 0) },
+		// >= 40%
+		{ RGB(0, 0, 0), RGB(255, 255, 0), RGB(255, 255, 0), RGB(0, 0, 0),
+		  RGB(255, 128, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(255, 0, 0),
+		  RGB(0, 0, 0),RGB(0, 0, 0), RGB(255, 128, 0), RGB(0, 0, 0) },
+	    // >= 60%
+		{ RGB(128, 255, 0), RGB(255, 255, 0), RGB(255, 255, 0), RGB(0, 0, 0),
+		  RGB(255, 128, 0), RGB(128, 255, 0), RGB(0, 0, 0), RGB(255, 0, 0),
+		  RGB(0, 0, 0),RGB(128, 255, 0), RGB(255, 128, 0), RGB(0, 0, 0) },
+		// >= 80%
+		{ RGB(64, 255, 0), RGB(255, 255, 0), RGB(255, 255, 0), RGB(0, 255, 0),
+		  RGB(255, 64, 0), RGB(64, 255, 0), RGB(0, 255, 0), RGB(255, 0, 0),
+		  RGB(0, 255, 0),RGB(64, 255, 0), RGB(255, 64, 0), RGB(0, 255, 0) },
+	};
+
+	uint16_t millivolts = Battery_Get();
+	uint8_t batteryPercent = Battery_Percent(millivolts) / 20; // 0...100% -> 0...5
+	if (batteryPercent > 4) {
+		batteryPercent = 4;
+	}
+
+	Led_Generate_Buffer(BatteryFrame[batteryPercent]);
+	BufferSelect = !BufferSelect;
+
+	HAL_Delay(2000);
+}
 
 
 

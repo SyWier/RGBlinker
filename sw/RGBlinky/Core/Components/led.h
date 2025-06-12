@@ -13,7 +13,7 @@
 #define LED_ROWS 4
 #define LED_NUM 9
 #define LED_CNT LED_ROWS * LED_NUM
-#define LED_PWM_MAX 31 // 0...15 -> 16 steps
+#define LED_PWM_MAX 64 // 0...15 -> 16 steps
 #define BUFFER_SIZE LED_ROWS * LED_PWM_MAX
 #define BUFFER_COUNT 2
 
