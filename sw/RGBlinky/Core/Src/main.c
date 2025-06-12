@@ -17,7 +17,7 @@
  */
 
 #define HW_VERSION "hw-v1.0"
-#define SW_VERSION "sw-v0.2"
+#define SW_VERSION "sw-v0.3"
 
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
