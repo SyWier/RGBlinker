@@ -15,6 +15,10 @@
  *
  ******************************************************************************
  */
+
+#define HW_VERSION "hw-v1.0"
+#define SW_VERSION "sw-v0.1"
+
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
@@ -219,14 +223,19 @@ int main(void) {
 	/* USER CODE BEGIN 2 */
 
 	/* Build Print Build Time */
-	Log_Important(__DATE__ " " __TIME__);
+	Log_Important("Build time: " __DATE__ " " __TIME__);
+	Log_Important("Hardware version: " HW_VERSION);
+	Log_Important("Software version: " SW_VERSION);
 
-	Log_Error("Reset status: %x", RCC->CSR2);
+//	Log_Error("Reset status: %x", RCC->CSR2);
 
-	// === Enable Wake Up source
-	Log_Error("PWR Flag: %d", __HAL_PWR_GET_FLAG(PWR_FLAG_WUF3));
+	// Check if we were in standby mode
+	if(__HAL_PWR_GET_FLAG(PWR_FLAG_WUF3)) {
+		Log_Info("Device waked up.");
+	} else {
+		Log_Info("Device powered up.");
+	}
 	__HAL_PWR_CLEAR_FLAG(PWR_FLAG_WUF3);
-	Log_Error("PWR Flag: %d", __HAL_PWR_GET_FLAG(PWR_FLAG_WUF3));
 
 	/* Init components */
 	Led_Init();
