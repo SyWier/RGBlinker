@@ -88,6 +88,7 @@ void Button_Tick(Button *b) {
 
 		// Check if it is a long press
 		if (b->t_stamp > BTN_LONG_MS) {
+			Led_Fill_Buffer(0x1FFF);
 			b->action = btn_long_press;
 		}
 
