@@ -8,6 +8,9 @@
 #include "button_handler.h"
 #include "log.h"
 #include "led.h"
+#include "main.h"
+
+Button userBtn;
 
 static inline uint8_t btn_level(Button *b) {
 	return HAL_GPIO_ReadPin(b->port, b->pin);  // assumes active-low push-button
@@ -15,31 +18,54 @@ static inline uint8_t btn_level(Button *b) {
 
 void btn_single_click(void) {
 	Log_Debug("Single");
-	Led_Fill_Buffer(0x0DB0);
-	HAL_GPIO_WritePin(EN_3V3_GPIO_Port, EN_3V3_Pin, 1); // Turn on 3.3V
+	Led_Test(0x1240);
+//	GPIOA->ODR = 0x1FFF;
+//	HAL_GPIO_WritePin(EN_3V3_GPIO_Port, EN_3V3_Pin, 1); // Turn on 3.3V
 }
 void btn_double_click(void) {
 	Log_Debug("Double");
-	Led_Fill_Buffer(0x16D0);
-	HAL_GPIO_WritePin(EN_3V3_GPIO_Port, EN_3V3_Pin, 1); // Turn on 3.3V
+	Led_Test(0x0920);
+//	GPIOA->ODR = 0x1FFF;
+//	HAL_GPIO_WritePin(EN_3V3_GPIO_Port, EN_3V3_Pin, 1); // Turn on 3.3V
 }
 void btn_long_press(void) {
 	Log_Debug("Long");
-	Led_Fill_Buffer(0x1FFF);
-	HAL_GPIO_WritePin(EN_3V3_GPIO_Port, EN_3V3_Pin, 0); // Turn off 3.3V
+	Log_Important("Going to standby mode... zzz...");
+	HAL_PWR_EnableWakeUpPin(PWR_WAKEUP_PIN3_HIGH);
+	__HAL_PWR_CLEAR_FLAG(PWR_FLAG_WUF3);
+	HAL_PWR_EnterSTANDBYMode();
 }
 void btn_vlong_press(void) {
 	Log_Debug("Very long");
-	Led_Fill_Buffer(0x0000);
-	HAL_GPIO_WritePin(EN_3V3_GPIO_Port, EN_3V3_Pin, 1); // Turn on 3.3V
+	Led_Test(0x1FF0);
+//	GPIOA->ODR = 0x1FFF;
+//	HAL_GPIO_WritePin(EN_3V3_GPIO_Port, EN_3V3_Pin, 1); // Turn on 3.3V
+}
+
+void Button_Init(Button *b) {
+	b->port = BTN_GPIO_Port;
+	b->pin = BTN_Pin;
+	b->state = BTN_BOOT;
+	b->action = btn_single_click;
+	b->is_initialized = 1;
 }
 
 void Button_Tick(Button *b) {
+	if(b->is_initialized == 0) {
+		return;
+	}
+
 	if(b->t_stamp < 16565) {
 		b->t_stamp++;
 	}
 
 	switch (b->state) {
+	case BTN_BOOT:
+		if (!btn_level(b)) {
+			b->state = BTN_IDLE;
+			b->t_stamp = 0;
+		}
+		break;
 	case BTN_IDLE:
 		//Wait for debounce
 		if (b->t_stamp < BTN_DEBOUNCE_MS) {
@@ -119,10 +145,3 @@ void Button_Tick(Button *b) {
 		break;
 	}
 }
-
-
-Button userBtn = {
-    .port = BTN_GPIO_Port,
-    .pin  = BTN_Pin,
-    .action = btn_single_click,
-};

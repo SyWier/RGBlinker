@@ -28,6 +28,7 @@
 #include "log.h"
 #include "battery.h"
 #include "led.h"
+#include "button_handler.h"
 
 int _write(int file, char *ptr, int len) {
 	HAL_UART_Transmit(&huart1, (const uint8_t*) ptr, (uint16_t) len,
@@ -168,6 +169,7 @@ const uint8_t gamma_lut[256] = { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4,
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+bool pwr_go_sleep = 0;
 
 /* USER CODE END PV */
 
@@ -219,13 +221,17 @@ int main(void) {
 	/* Build Print Build Time */
 	Log_Important(__DATE__ " " __TIME__);
 
+	Log_Error("Reset status: %x", RCC->CSR2);
+
+	// === Enable Wake Up source
+	Log_Error("PWR Flag: %d", __HAL_PWR_GET_FLAG(PWR_FLAG_WUF3));
+	__HAL_PWR_CLEAR_FLAG(PWR_FLAG_WUF3);
+	Log_Error("PWR Flag: %d", __HAL_PWR_GET_FLAG(PWR_FLAG_WUF3));
+
 	/* Init components */
 	Led_Init();
 	Battery_Init();
-
-	// === Enable Wake Up source
-	//  HAL_PWR_EnableWakeUpPin(PWR_WAKEUP_PIN3_HIGH);
-	//  __HAL_PWR_CLEAR_FLAG(PWR_FLAG_WU);
+	Button_Init(&userBtn);
 
 	/* Start timers */
 	HAL_TIM_Base_Start_IT(&htim3);
@@ -260,7 +266,10 @@ int main(void) {
 		if (adc_flag) {
 			adc_flag = 0;
 			Battery_Print();
-	}
+		}
+		if(pwr_go_sleep) {
+
+		}
 
 	/* USER CODE END WHILE */
 

@@ -66,3 +66,18 @@ void Led_Generate_Buffer(uint8_t frame[LED_CNT]) {
 	return;
 }
 
+void Led_Test(uint32_t colorRaw) {
+	uint32_t reg; // Temporary buffer to calculate output
+
+	for(uint32_t i = 0; i < 4; i++) {
+
+		reg = 0x1FFF;				// Set all 13 bits high (anodes/cathodes OFF)
+		reg &= ~(1 << i);           // Set selected anode HIGH (set P-MOSFET gate LOW)
+		reg &= ~colorRaw;           // Set selected cathode LOW (sink current)
+
+		for (uint16_t j = 0; j < LED_PWM_MAX; j++) {
+			LedBuffer[0][i * LED_PWM_MAX + j] = (GPIOA->ODR & ~0x1FFF) | (reg & 0x1FFF); // Write back only PA0–PA12
+			LedBuffer[1][i * LED_PWM_MAX + j] = (GPIOA->ODR & ~0x1FFF) | (reg & 0x1FFF); // Write back only PA0–PA12
+		}
+	}
+}

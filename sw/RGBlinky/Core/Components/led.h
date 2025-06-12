@@ -23,5 +23,6 @@ extern bool BufferSelect;
 void Led_Init();
 void Led_Fill_Buffer(uint16_t color);
 void Led_Generate_Buffer(uint8_t frame[LED_CNT]);
+void Led_Test(uint32_t colorRaw);
 
 #endif /* COMPONENTS_LED_H_ */

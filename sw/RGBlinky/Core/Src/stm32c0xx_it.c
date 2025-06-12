@@ -53,8 +53,6 @@
 /* USER CODE BEGIN 0 */
 #include "button_handler.h"
 
-extern Button userBtn;
-
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/

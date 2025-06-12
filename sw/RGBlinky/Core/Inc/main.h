@@ -37,6 +37,7 @@ extern "C" {
 
 /* Exported types ------------------------------------------------------------*/
 /* USER CODE BEGIN ET */
+extern bool pwr_go_sleep;
 
 /* USER CODE END ET */
 
