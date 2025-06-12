@@ -9,6 +9,7 @@
 #include "log.h"
 #include "led.h"
 #include "main.h"
+#include "animation.h"
 
 Button userBtn;
 
@@ -18,15 +19,13 @@ static inline uint8_t btn_level(Button *b) {
 
 void btn_single_click(void) {
 	Log_Debug("Single");
-	Led_Test(0x1240);
-//	GPIOA->ODR = 0x1FFF;
-//	HAL_GPIO_WritePin(EN_3V3_GPIO_Port, EN_3V3_Pin, 1); // Turn on 3.3V
+	Animation_Next();
+	Animation_Handle();
 }
 void btn_double_click(void) {
 	Log_Debug("Double");
-	Led_Test(0x0920);
-//	GPIOA->ODR = 0x1FFF;
-//	HAL_GPIO_WritePin(EN_3V3_GPIO_Port, EN_3V3_Pin, 1); // Turn on 3.3V
+	Animation_Prev();
+	Animation_Handle();
 }
 void btn_long_press(void) {
 	Log_Debug("Long");
@@ -37,9 +36,8 @@ void btn_long_press(void) {
 }
 void btn_vlong_press(void) {
 	Log_Debug("Very long");
-	Led_Test(0x1FF0);
-//	GPIOA->ODR = 0x1FFF;
-//	HAL_GPIO_WritePin(EN_3V3_GPIO_Port, EN_3V3_Pin, 1); // Turn on 3.3V
+	animation_debug_mode = !animation_debug_mode;
+	Animation_Handle();
 }
 
 void Button_Init(Button *b) {
@@ -94,6 +92,7 @@ void Button_Tick(Button *b) {
 
 		// Check if it is a very long press
 		if (b->t_stamp > BTN_VLONG_MS) {
+			Led_Test(0x1FF0);
 			b->action = btn_vlong_press;
 		}
 
