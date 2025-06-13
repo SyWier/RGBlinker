@@ -29,10 +29,10 @@ void btn_double_click(void) {
 }
 void btn_long_press(void) {
 	Log_Debug("Long");
-	Log_Important("Going to standby mode... zzz...");
+	Log_Important("Going to SHUTDOWN mode... zzz...");
 	HAL_PWR_EnableWakeUpPin(PWR_WAKEUP_PIN3_HIGH);
 	__HAL_PWR_CLEAR_FLAG(PWR_FLAG_WUF3);
-	HAL_PWR_EnterSTANDBYMode();
+	HAL_PWREx_EnterSHUTDOWNMode();
 }
 void btn_vlong_press(void) {
 	Log_Debug("Very long");
