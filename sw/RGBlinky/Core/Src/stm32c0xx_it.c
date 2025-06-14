@@ -22,6 +22,8 @@
 #include "stm32c0xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "tim.h"
+#include "log.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -57,7 +59,7 @@
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
-extern TIM_HandleTypeDef htim3;
+
 /* USER CODE BEGIN EV */
 
 /* USER CODE END EV */
@@ -142,30 +144,27 @@ void SysTick_Handler(void)
 /* please refer to the startup file (startup_stm32c0xx.s).                    */
 /******************************************************************************/
 
+/* USER CODE BEGIN 1 */
+
 /**
   * @brief This function handles TIM3 global interrupt.
   */
-void TIM3_IRQHandler(void)
-{
-  /* USER CODE BEGIN TIM3_IRQn 0 */
-
-  /* USER CODE END TIM3_IRQn 0 */
-  HAL_TIM_IRQHandler(&htim3);
-  /* USER CODE BEGIN TIM3_IRQn 1 */
-
-  /* USER CODE END TIM3_IRQn 1 */
+void TIM3_IRQHandler(void) {
+	static uint16_t pwmCnt = 0;
+	GPIOA->ODR = LedBuffer[!BufferSelect][pwmCnt];
+	pwmCnt = (pwmCnt + 1) & 0xFF;
+	__HAL_TIM_CLEAR_FLAG(&htim3, TIM_FLAG_UPDATE);
 }
 
-/* USER CODE BEGIN 1 */
-uint16_t pwmCnt = 0;
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
-	if (htim->Instance == TIM3) {
-		GPIOA->ODR = LedBuffer[!BufferSelect][pwmCnt];
-		pwmCnt++;
-		if (pwmCnt >= BUFFER_SIZE) {
-			pwmCnt = 0;
-		}
-	}
+//	if (htim->Instance == TIM3) {
+//		GPIOA->ODR = LedBuffer[!BufferSelect][pwmCnt];
+//		pwmCnt++;
+//		if (pwmCnt >= BUFFER_SIZE) {
+//			pwmCnt = 0;
+//		}
+//	}
+	Log_Error("?");
 }
 
 void EXTI4_15_IRQHandler(void)
