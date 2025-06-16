@@ -86,7 +86,6 @@ void Battery_Gauge() {
 	}
 
 	Led_Generate_Buffer(BatteryFrame[batteryPercent]);
-	BufferSelect = !BufferSelect;
 
 	HAL_Delay(2000);
 }

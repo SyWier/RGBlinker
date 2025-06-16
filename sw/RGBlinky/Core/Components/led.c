@@ -16,8 +16,6 @@ void Led_Init() {
 	uint16_t reg = GPIOA->ODR | 0x1FFF;
 	for (uint16_t i = 0; i < BUFFER_SIZE + 4; i++) {
 		LedBuffer[0][i] = reg;
-	}
-	for (uint16_t i = 0; i < BUFFER_SIZE + 4; i++) {
 		LedBuffer[1][i] = reg;
 	}
 
@@ -56,13 +54,13 @@ void Led_Generate_Buffer(uint8_t frame[LED_CNT]) {
 
 			// Set LED values
 			for (uint16_t n = 0; n < pwm; n++) {
-				LedBuffer[BufferSelect][row * LED_PWM_MAX + n] &= ~ANODE_PIN(
-						row); // LED anode
-				LedBuffer[BufferSelect][row * LED_PWM_MAX + n] &= ~CATHODE_PIN(
-						led); // LED cathode
+				LedBuffer[BufferSelect][row * LED_PWM_MAX + n] &= ~ANODE_PIN(row); // LED anode
+				LedBuffer[BufferSelect][row * LED_PWM_MAX + n] &= ~CATHODE_PIN( led); // LED cathode
 			}
 		}
 	}
+
+	BufferSelect = !BufferSelect;
 
 	return;
 }
@@ -77,8 +75,9 @@ void Led_Test(uint32_t colorRaw) {
 		reg &= ~colorRaw;           // Set selected cathode LOW (sink current)
 
 		for (uint16_t j = 0; j < LED_PWM_MAX; j++) {
-			LedBuffer[0][i * LED_PWM_MAX + j] = (GPIOA->ODR & ~0x1FFF) | (reg & 0x1FFF); // Write back only PA0–PA12
-			LedBuffer[1][i * LED_PWM_MAX + j] = (GPIOA->ODR & ~0x1FFF) | (reg & 0x1FFF); // Write back only PA0–PA12
+			LedBuffer[BufferSelect][i * LED_PWM_MAX + j] = (GPIOA->ODR & ~0x1FFF) | (reg & 0x1FFF); // Write back only PA0–PA12
 		}
 	}
+
+	BufferSelect = !BufferSelect;
 }
