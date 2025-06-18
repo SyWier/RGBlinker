@@ -26,9 +26,9 @@ extern bool BufferSelect;
 #define RGB_SCALE (RGB_BUFFER_SCALE + RGB_BRIGHTNESS_SCALE)
 
 #ifdef HW_V1_0
-#define RGB(r, g, b)  (b >> RGB_SCALE), (g >> RGB_SCALE), (r >> RGB_SCALE)
+#define RGB(r, g, b)  ((const uint8_t)((b) >> RGB_SCALE)), ((const uint8_t)((g) >> RGB_SCALE)), ((const uint8_t)((r) >> RGB_SCALE))
 #elif defined(HW_V1_1)
-#define RGB(r, g, b)  (r >> RGB_SCALE), (g >> RGB_SCALE), (b >> RGB_SCALE)
+#define RGB(r, g, b)  ((const uint8_t)((r) >> RGB_SCALE)), ((const uint8_t)((g) >> RGB_SCALE)), ((const uint8_t)((b) >> RGB_SCALE))
 #endif
 
 #define FILL_RGB(r, g, b) \
@@ -43,7 +43,7 @@ extern bool BufferSelect;
 
 void Led_Init();
 void Led_Fill_Buffer(uint16_t color);
-void Led_Generate_Buffer(uint8_t frame[LED_CNT]);
+void Led_Generate_Buffer(const uint8_t frame[LED_CNT]);
 void Led_Test(uint32_t colorRaw);
 
 #endif /* COMPONENTS_LED_H_ */

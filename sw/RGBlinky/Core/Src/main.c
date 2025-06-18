@@ -152,16 +152,17 @@ int main(void)
 
 	Battery_Gauge();
 
-//	Anim_1();
-
 	Led_Fill_Buffer(0xEEE);
 
-	uint8_t frameCount = sizeof(anim1)/sizeof(LedFrame_t);
-	Log_Info("Frame Count: %d", frameCount);
+	for(int i = 0; i < Animator.animationCount; i++) {
+		LedAnimation_t animation = Animator.animations[i];
 
-	for(int i = 0; i < frameCount; i++) {
-		anim1[i].instruction(anim1[i].data);
-		HAL_Delay(1000);
+		for(int j = 0; j < animation.frameCount; j++) {
+			const LedFrame_t frame = animation.frames[j];
+
+			frame.instruction(frame.data);
+			HAL_Delay(animation.frameTime);
+		}
 	}
 
   /* USER CODE END 2 */

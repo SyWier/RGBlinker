@@ -8,6 +8,7 @@
 #include "animation.h"
 #include "led.h"
 #include "log.h"
+#include <string.h>
 
 bool animation_debug_mode = 0;
 uint8_t animation_debug_state = 0;
@@ -83,71 +84,59 @@ void Animation_Prev() {
 	}
 }
 
-void Anim_Load(uint8_t* buffer) {
-
-}
-void Anim_Add(uint8_t* buffer, uint8_t* pattern) {
-
-}
-void Anim_Shift(uint8_t* buffer, uint8_t cnt) {
-	uint8_t LUT[12] = {1, 12, 9, 6, 3, 11, 8, 5, 2, 10, 7, 4};
-
-	uint8_t tmp[LED_CNT];
-	memcpy(tmp, buffer, LED_CNT);
-
-	for(int i = 0; i < LED_CNT; i++) {
-		buffer[i] = buffer[i-1];
-	}
-	buffer[0] = tmp;
-}
-
-void Anim_1() {
-	uint8_t frame[LED_CNT] = {
-		RGB(255, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0),
-		RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0),
-		RGB(0, 0, 0),RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0)
-	};
-
-//	for(int i = 0; i < LED_CNT; i+=3) {
-//		frame[i] = 63;
-//	}
-
-	Led_Generate_Buffer(frame);
-
-//	for(int i = 0; i < 12; i++) {
-	while(1) {
-		Anim_Shift(frame, 1);
-		Led_Generate_Buffer(frame);
-		HAL_Delay(1000);
-	}
-
-}
-void Anim_2() {
-
-}
-
-const LedFrame_t anim1[] = {
+const LedFrame_t frames1[] = {
 		{load, { RGB(255, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0),RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0) } },
 		{load, { RGB(0, 0, 0), RGB(0, 255, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0),RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0) } },
 		{load, { RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 255), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0),RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0) } },
+};
+
+const LedFrame_t frames2[] = {
+		{load, { FILL_RED(255) } },
+		{load, { FILL_GREEN(255) } },
+		{load, { FILL_BLUE(255) } },
+		{load, { FILL_WHITE(255) } },
+};
+
+const LedFrame_t frames3[] = {
 		{load, { FILL_RED(255) } },
 		{load, { FILL_RED(196) } },
 		{load, { FILL_RED(128) } },
 		{load, { FILL_RED(64) } },
-		{load, { FILL_GREEN(255) } },
-		{load, { FILL_BLUE(255) } },
-		{load, { FILL_WHITE(255) } },
-		{repeat, {5} },
 };
 
-void load(uint8_t* data) {
+
+#define LEN(var) ( sizeof(var)/sizeof(var[0]) )
+
+LedAnimation_t animations[] = {
+		{frames1, LEN(frames1), 250},
+		{frames2, LEN(frames2), 500},
+		{frames3, LEN(frames3), 250},
+};
+
+LedAnimator_t Animator = {
+		.frameIndex = 0,
+		.animationIndex = 0,
+
+		.animations = animations,
+		.animationCount = sizeof(animations)/sizeof(LedAnimation_t),
+
+		.lastTime = 0,
+		.repeatCount = 0,
+};
+
+void load(const uint8_t* data) {
 	Log_Debug("(Instr) load");
 	Led_Generate_Buffer(data);
 }
-void add(uint8_t* data) {
+void add(const uint8_t* data) {
+	signed char value;
+	for(int i = 0; i < LED_CNT; i++) {
+		value = data[i];
+
+	}
 	Log_Debug("(Instr) add");
 }
-void repeat(uint8_t* data) {
+void repeat(const uint8_t* data) {
 	Log_Debug("(Instr) repeat: %d", data[0]);
 }
 
