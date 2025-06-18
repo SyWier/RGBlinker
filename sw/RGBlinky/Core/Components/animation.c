@@ -122,9 +122,8 @@ LedAnimator_t Animator = {
 bool animationFlag = 0;;
 
 void load(const uint8_t* data) {
-	Animator.lastTime = 0;
 	memcpy(Animator.pwmBuffer, data, LED_CNT);
-	Log_Info("load: %d", Animator.pwmBuffer[0]);
+//	Log_Info("load: %d", Animator.pwmBuffer[0]);
 }
 void add(const uint8_t* data) {
 	for(int i = 0; i < LED_CNT; i++) {
@@ -141,7 +140,7 @@ void shift(const uint8_t* data) {
 	int8_t val = (int8_t)data[0];
 
 	if(val > 0) {
-		Log_Debug("(Instr) shift right: %d", data[0]);
+//		Log_Debug("(Instr) shift right: %d", data[0]);
 
 		uint8_t temp[val];
 
@@ -158,7 +157,7 @@ void shift(const uint8_t* data) {
 	}
 
 	if(val < 0) {
-		Log_Debug("(Instr) shift left: %d", data[0]);
+//		Log_Debug("(Instr) shift left: %d", data[0]);
 
 		val = -val;
 
