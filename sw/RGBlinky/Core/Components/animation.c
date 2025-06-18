@@ -13,53 +13,54 @@
 bool animation_debug_mode = 0;
 uint8_t animation_debug_state = 0;
 uint8_t animation_state = 0;
-
-void Animation_Debug_Handle() {
-	switch(animation_debug_state) {
-	case 0: Led_Test(0x1240); break; // Red
-	case 1: Led_Test(0x0920); break; // Green
-	case 2: Led_Test(0x0490); break; // Blue
-	default: Led_Test(0x1FF0); break; // White - Unknown state
-	}
-}
-
-void Animation_Debug_Next() {
-	switch(animation_debug_state) {
-	case 0: animation_debug_state = 1; break;
-	case 1: animation_debug_state = 2; break;
-	case 2: animation_debug_state = 0; break;
-	default: animation_debug_state = 0; break;
-	}
-}
-
-void Animation_Debug_Prev() {
-	switch(animation_debug_state) {
-	case 0: animation_debug_state = 2; break;
-	case 1: animation_debug_state = 0; break;
-	case 2: animation_debug_state = 1; break;
-	default: animation_debug_state = 0; break;
-	}
-}
-
-void Animation_Handle() {
-	// Debug mode - stationary leds to identify faulty LEDs
-	if(animation_debug_mode) {
-		Animation_Debug_Handle();
-		return;
-	}
-
-	// Normal mode
-	switch(animation_state) {
-	case 0: Led_Test(0x1B60); break; // Yellow
-	case 1: Led_Test(0x0DB0); break; // Cyan
-	case 2: Led_Test(0x16D0); break; // Magenta
-	default: Led_Test(0x1FF0); break; // White - Unknown state
-	}
-}
+//
+//void Animation_Debug_Handle() {
+//	switch(animation_debug_state) {
+//	case 0: Led_Test(0x1240); break; // Red
+//	case 1: Led_Test(0x0920); break; // Green
+//	case 2: Led_Test(0x0490); break; // Blue
+//	default: Led_Test(0x1FF0); break; // White - Unknown state
+//	}
+//}
+//
+//void Animation_Debug_Next() {
+//	switch(animation_debug_state) {
+//	case 0: animation_debug_state = 1; break;
+//	case 1: animation_debug_state = 2; break;
+//	case 2: animation_debug_state = 0; break;
+//	default: animation_debug_state = 0; break;
+//	}
+//}
+//
+//void Animation_Debug_Prev() {
+//	switch(animation_debug_state) {
+//	case 0: animation_debug_state = 2; break;
+//	case 1: animation_debug_state = 0; break;
+//	case 2: animation_debug_state = 1; break;
+//	default: animation_debug_state = 0; break;
+//	}
+//}
+//
+//void Animation_Handle() {
+//	// Debug mode - stationary leds to identify faulty LEDs
+//	if(animation_debug_mode) {
+//		Animation_Debug_Handle();
+//		return;
+//	}
+//
+//	// Normal mode
+//	switch(animation_state) {
+//	case 0: Led_Test(0x1B60); break; // Yellow
+//	case 1: Led_Test(0x0DB0); break; // Cyan
+//	case 2: Led_Test(0x16D0); break; // Magenta
+//	default: Led_Test(0x1FF0); break; // White - Unknown state
+//	}
+//}
 
 void Animation_Next() {
 	Animator.lastTime = 0;
 	Animator.frameIndex = 0;
+	Animator.repeatCount = 0;
 	Animator.animationIndex++;
 	if(Animator.animationIndex >= Animator.animationCount) {
 		Animator.animationIndex = 0;
@@ -68,6 +69,7 @@ void Animation_Next() {
 void Animation_Prev() {
 	Animator.lastTime = 0;
 	Animator.frameIndex = 0;
+	Animator.repeatCount = 0;
 	if(Animator.animationIndex == 0) {
 		Animator.animationIndex = Animator.animationCount;
 	}
@@ -88,22 +90,25 @@ const LedFrame_t frames2[] = {
 };
 
 const LedFrame_t frames3[] = {
-		{load, { FILL_RED(255) } },
-		{load, { FILL_RED(196) } },
-		{load, { FILL_RED(128) } },
-		{load, { FILL_RED(64) } },
+		{load, { FILL_RGB(255, 0, 255) } },
+		{repeat, { 15 } },
+		{add, {FILL_RGB(-15, 0, -15)} },
+		{repeat, { 15 } },
+		{add, {FILL_RGB(15, 0, 15)} },
 };
 
 
 #define LEN(var) ( sizeof(var)/sizeof(var[0]) )
 
 LedAnimation_t animations[] = {
+		{frames3, LEN(frames3), 100},
 		{frames1, LEN(frames1), 250},
 		{frames2, LEN(frames2), 500},
-		{frames3, LEN(frames3), 250},
 };
 
 LedAnimator_t Animator = {
+		.pwmBuffer = {},
+
 		.frameIndex = 0,
 		.animationIndex = 0,
 
@@ -117,17 +122,17 @@ LedAnimator_t Animator = {
 bool animationFlag = 0;;
 
 void load(const uint8_t* data) {
-	Led_Generate_Buffer(data);
+	memcpy(Animator.pwmBuffer, data, LED_CNT);
+	Log_Info("load: %d", Animator.pwmBuffer[0]);
 }
 void add(const uint8_t* data) {
-	signed char value;
 	for(int i = 0; i < LED_CNT; i++) {
-		value = data[i];
-
+		Animator.pwmBuffer[i] += data[i];
 	}
 }
+
 void repeat(const uint8_t* data) {
-	Log_Debug("(Instr) repeat: %d", data[0]);
+	Animator.repeatCount = data[0] - 1;
 }
 
 void shift(const uint8_t* data) {
@@ -135,7 +140,7 @@ void shift(const uint8_t* data) {
 }
 
 void Animate() {
-	// Return
+	// Return if no animation is running
 	if(animationFlag == 0) {
 		return;
 	}
@@ -152,6 +157,13 @@ void Animate() {
 
 	// Handle animation
 	frame.instruction(frame.data);
+	Led_Generate_Buffer(Animator.pwmBuffer);
+
+	// Check repeat
+	if(frame.instruction != repeat && Animator.repeatCount > 0) {
+		Animator.repeatCount--;
+		return;
+	}
 
 	// Update index
 	Animator.frameIndex++;

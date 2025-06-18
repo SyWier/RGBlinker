@@ -36,6 +36,8 @@ typedef struct {
 } LedAnimation_t;
 
 typedef struct {
+	uint8_t pwmBuffer[LED_CNT];
+
 	uint8_t frameIndex;
 	uint8_t animationIndex;
 
