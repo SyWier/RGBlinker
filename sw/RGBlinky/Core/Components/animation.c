@@ -76,20 +76,8 @@ void Animation_Prev() {
 	Animator.animationIndex--;
 }
 
-const LedFrame_t frames1[] = {
-		{load, { RGB(255, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(255, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(255, 0, 0),RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0) } },
-		{repeat, { 35 } },
-		{shift, {1} },
-};
 
-const LedFrame_t frames2[] = {
-		{load, { FILL_RED(255) } },
-		{load, { FILL_GREEN(255) } },
-		{load, { FILL_BLUE(255) } },
-		{load, { FILL_WHITE(255) } },
-};
-
-const LedFrame_t frames3[] = {
+const LedFrame_t heart[] = {
 		{load, { FILL_RGB(255, 0, 255) } },
 		{repeat, { 15 } },
 		{add, {FILL_RGB(-15, 0, -15)} },
@@ -97,13 +85,26 @@ const LedFrame_t frames3[] = {
 		{add, {FILL_RGB(15, 0, 15)} },
 };
 
+const LedFrame_t blinky[] = {
+		{load, { RGB(255, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(255, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(255, 0, 0),RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0) } },
+		{repeat, { 35 } },
+		{shift, {1} },
+};
+
+const LedFrame_t colors[] = {
+		{load, { FILL_RED(255) } },
+		{load, { FILL_GREEN(255) } },
+		{load, { FILL_BLUE(255) } },
+};
+
+
 
 #define LEN(var) ( sizeof(var)/sizeof(var[0]) )
 
 LedAnimation_t animations[] = {
-		{frames1, LEN(frames1), 50},
-		{frames2, LEN(frames2), 500},
-		{frames3, LEN(frames3), 100},
+		{heart, LEN(heart), 100},
+		{blinky, LEN(blinky), 50},
+		{colors, LEN(colors), 500},
 };
 
 LedAnimator_t Animator = {

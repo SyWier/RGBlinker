@@ -55,6 +55,7 @@ void load(const uint8_t* data);
 void add(const uint8_t* data);
 void repeat(const uint8_t* data);
 void shift(const uint8_t* data);
+void hue(const uint8_t* data);
 
 void Animate();
 
