@@ -122,6 +122,7 @@ LedAnimator_t Animator = {
 bool animationFlag = 0;;
 
 void load(const uint8_t* data) {
+	Animator.lastTime = 0;
 	memcpy(Animator.pwmBuffer, data, LED_CNT);
 	Log_Info("load: %d", Animator.pwmBuffer[0]);
 }
@@ -132,6 +133,7 @@ void add(const uint8_t* data) {
 }
 
 void repeat(const uint8_t* data) {
+	Animator.lastTime = 0;
 	Animator.repeatCount = data[0] - 1;
 }
 
