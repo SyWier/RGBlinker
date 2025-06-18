@@ -35,7 +35,7 @@ extern "C" {
 
 #define HW_V1_0
 #define HW_VERSION "hw-v1.0"
-#define SW_VERSION "sw-v0.3"
+#define SW_VERSION "sw-v0.4"
 
 /* USER CODE END Includes */
 
