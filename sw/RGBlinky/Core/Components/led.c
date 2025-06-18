@@ -31,6 +31,12 @@ const uint8_t gamma_lut[256] = {
    233, 234, 236, 237, 239, 240, 242, 243, 245, 246, 248, 249, 251, 252, 254, 255,
 };
 
+// Physical layout to logical layout
+const uint8_t log_lut[LED_CNT] = { 0, 1, 2, 33, 34, 35, 24, 25, 26, 15, 16, 17, 6, 7, 8, 30, 31, 32, 21, 22, 23, 12, 13, 14, 3, 4, 5, 27, 28, 29, 18, 19, 20, 9, 10, 11 };
+
+const uint8_t row_lut[LED_CNT] = { 0, 0, 0, 3, 3, 3, 2, 2, 2, 1, 1, 1, 0, 0, 0, 3, 3, 3, 2, 2, 2, 1, 1, 1, 0, 0, 0, 3, 3, 3, 2, 2, 2, 1, 1, 1 };
+const uint8_t col_lut[LED_CNT] = { 0, 1, 2, 6, 7, 8, 6, 7, 8, 6, 7, 8, 6, 7, 8, 3, 4, 5, 3, 4, 5, 3, 4, 5, 3, 4, 5, 0, 1, 2, 0, 1, 2, 0, 1, 2 };
+
 void Led_Init() {
 	// Init LED buffer (turn off all LEDs by default))
 	// The last values are unused for optimalization reasons
@@ -63,29 +69,29 @@ void Led_Generate_Buffer(const uint8_t frame[LED_CNT]) {
 	}
 
 	// Generate buffer
-	for (uint16_t row = 0; row < LED_ROWS; row++) { // Select row
-		for (uint16_t led = 0; led < LED_NUM; led++) { // Select LED
+	for(uint8_t i = 0; i < LED_CNT; i++) {
+		uint8_t pwm = frame[i];
+		pwm = gamma_lut[pwm]; // Gamma correction
+		pwm = pwm >> RGB_SCALE; // Scale down pwm
+		if (pwm > LED_PWM_MAX) { //Trim to max
+			pwm = LED_PWM_MAX;
+		}
 
-			// PWM number between 0-255
-//			uint8_t pwm = gamma_lut[frame[row * LED_NUM + led]];
-			uint8_t pwm = frame[row * LED_NUM + led];
-			pwm = gamma_lut[pwm];
-			pwm = pwm >> RGB_SCALE;
-			if (pwm > LED_PWM_MAX) {
-				pwm = LED_PWM_MAX;
-			}
+		uint8_t index = log_lut[i];
+		uint8_t row = row_lut[i];
+		uint8_t col = col_lut[i];
 
-			// Set LED values
-			for (uint16_t n = 0; n < pwm; n++) {
-				LedBuffer[BufferSelect][row * LED_PWM_MAX + n] &= ~ANODE_PIN(row); // LED anode
-				LedBuffer[BufferSelect][row * LED_PWM_MAX + n] &= ~CATHODE_PIN( led); // LED cathode
-			}
+		// Set LED values
+		for (uint16_t n = 0; n < pwm; n++) {
+			LedBuffer[BufferSelect][row * LED_PWM_MAX + n] &= ~ANODE_PIN(row); // LED anode
+			LedBuffer[BufferSelect][row * LED_PWM_MAX + n] &= ~CATHODE_PIN(col); // LED cathode
+
+//			LedBuffer[BufferSelect][row * LED_PWM_MAX + n] &= ~ANODE_PIN(row); // LED anode
+//			LedBuffer[BufferSelect][row * LED_PWM_MAX + n] &= ~CATHODE_PIN( led); // LED cathode
 		}
 	}
 
 	BufferSelect = !BufferSelect;
-
-	return;
 }
 
 void Led_Test(uint32_t colorRaw) {
