@@ -12,7 +12,7 @@
 #include "stdbool.h"
 
 #define BTN_DEBOUNCE_MS	50		// Ignore contact bounce
-#define BTN_DOUBLE_MS	250     // Max gap before 2nd click
+#define BTN_DOUBLE_MS	200     // Max gap before 2nd click
 #define BTN_LONG_MS		2000    // Press ≥ 2.0 s
 #define BTN_VLONG_MS	5000    // Press ≥ 5.0 s
 

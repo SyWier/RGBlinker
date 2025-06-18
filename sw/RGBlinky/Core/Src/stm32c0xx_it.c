@@ -134,7 +134,7 @@ void SysTick_Handler(void)
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();
   /* USER CODE BEGIN SysTick_IRQn 1 */
-  Button_Tick(&userBtn);
+  tickFlag = 1;
   /* USER CODE END SysTick_IRQn 1 */
 }
 
@@ -155,6 +155,12 @@ void TIM14_IRQHandler(void)
   timCnt++;
   if(timCnt == 3600) {
 	  PowerOff();
+  }
+
+  static uint8_t battCnt = 0;
+  battCnt++;
+  if(battCnt == 10) {
+	  Battery_Print();
   }
 
   /* USER CODE END TIM14_IRQn 0 */

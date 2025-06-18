@@ -21,12 +21,12 @@ static inline uint8_t btn_level(Button *b) {
 void btn_single_click(void) {
 	Log_Debug("Single");
 	Animation_Next();
-	Animation_Handle();
+//	Animation_Handle();
 }
 void btn_double_click(void) {
 	Log_Debug("Double");
 	Animation_Prev();
-	Animation_Handle();
+//	Animation_Handle();
 }
 void btn_long_press(void) {
 	Log_Debug("Long");
@@ -34,8 +34,8 @@ void btn_long_press(void) {
 }
 void btn_vlong_press(void) {
 	Log_Debug("Very long");
-	animation_debug_mode = !animation_debug_mode;
-	Animation_Handle();
+//	animation_debug_mode = !animation_debug_mode;
+//	Animation_Handle();
 }
 
 void Button_Init(Button *b) {
@@ -84,12 +84,15 @@ void Button_Tick(Button *b) {
 
 		// Check if it is a long press
 		if (b->t_stamp > BTN_LONG_MS) {
+			// Turn off temporarely LEDs
+			animationFlag = 0;
 			Led_Fill_Buffer(0x1FFF);
 			b->action = btn_long_press;
 		}
 
 		// Check if it is a very long press
 		if (b->t_stamp > BTN_VLONG_MS) {
+			animationFlag = 1;
 			Led_Test(0x1FF0);
 			b->action = btn_vlong_press;
 		}

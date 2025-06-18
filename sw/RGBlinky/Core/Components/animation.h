@@ -47,10 +47,13 @@ typedef struct {
 } LedAnimator_t;
 
 extern LedAnimator_t Animator;
+extern bool animationFlag;
 
 void load(const uint8_t* data);
 void add(const uint8_t* data);
 void repeat(const uint8_t* data);
 void shift(const uint8_t* data);
+
+void Animate();
 
 #endif /* COMPONENTS_ANIMATION_H_ */

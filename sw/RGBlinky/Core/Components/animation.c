@@ -58,30 +58,20 @@ void Animation_Handle() {
 }
 
 void Animation_Next() {
-	if(animation_debug_mode) {
-		Animation_Debug_Next();
-		return;
-	}
-
-	switch(animation_state) {
-	case 0: animation_state = 1; break;
-	case 1: animation_state = 2; break;
-	case 2: animation_state = 0; break;
-	default: animation_state = 0; break;
+	Animator.lastTime = 0;
+	Animator.frameIndex = 0;
+	Animator.animationIndex++;
+	if(Animator.animationIndex >= Animator.animationCount) {
+		Animator.animationIndex = 0;
 	}
 }
 void Animation_Prev() {
-	if(animation_debug_mode) {
-		Animation_Debug_Prev();
-		return;
+	Animator.lastTime = 0;
+	Animator.frameIndex = 0;
+	if(Animator.animationIndex == 0) {
+		Animator.animationIndex = Animator.animationCount;
 	}
-
-	switch(animation_state) {
-	case 0: animation_state = 2; break;
-	case 1: animation_state = 0; break;
-	case 2: animation_state = 1; break;
-	default: animation_state = 0; break;
-	}
+	Animator.animationIndex--;
 }
 
 const LedFrame_t frames1[] = {
@@ -124,8 +114,9 @@ LedAnimator_t Animator = {
 		.repeatCount = 0,
 };
 
+bool animationFlag = 0;;
+
 void load(const uint8_t* data) {
-	Log_Debug("(Instr) load");
 	Led_Generate_Buffer(data);
 }
 void add(const uint8_t* data) {
@@ -134,9 +125,38 @@ void add(const uint8_t* data) {
 		value = data[i];
 
 	}
-	Log_Debug("(Instr) add");
 }
 void repeat(const uint8_t* data) {
 	Log_Debug("(Instr) repeat: %d", data[0]);
+}
+
+void shift(const uint8_t* data) {
+	Log_Debug("(Instr) shift: %d", data[0]);
+}
+
+void Animate() {
+	// Return
+	if(animationFlag == 0) {
+		return;
+	}
+
+	// Get handles
+	LedAnimation_t animation = Animator.animations[Animator.animationIndex];
+	LedFrame_t frame = animation.frames[Animator.frameIndex];
+
+	// Check ellapsed time
+	if(HAL_GetTick() - Animator.lastTime < animation.frameTime) {
+		return;
+	}
+	Animator.lastTime = HAL_GetTick();
+
+	// Handle animation
+	frame.instruction(frame.data);
+
+	// Update index
+	Animator.frameIndex++;
+	if(Animator.frameIndex >= animation.frameCount) {
+		Animator.frameIndex = 0;
+	}
 }
 

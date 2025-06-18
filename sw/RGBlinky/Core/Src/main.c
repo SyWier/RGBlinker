@@ -38,25 +38,7 @@ int _write(int file, char *ptr, int len) {
 	return HAL_OK;
 }
 
-#define FRAME_TEST 0
-#if FRAME_TEST
-#define FRAME_COUNT 6
-uint8_t LedFrame[FRAME_COUNT][LED_CNT] = {
-//  { 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31, 31 },
-	{ 31, 0, 0, 0, 31, 0, 0, 0, 31, 15, 0, 0, 0, 15, 0, 0, 0, 15, 7, 0, 0,
-	0, 7, 0, 0, 0, 7, 1, 0, 0, 0, 1, 0, 0, 0, 1 }, { 15, 0, 0, 0,
-	15, 0, 0, 0, 15, 7, 0, 0, 0, 7, 0, 0, 0, 7, 1, 0, 0, 0, 1, 0, 0,
-	0, 1, 7, 0, 0, 0, 7, 0, 0, 0, 7 }, { 7, 0, 0, 0, 7, 0, 0, 0, 7,
-	1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 0, 0, 7, 0, 0, 0, 7, 15, 0, 0,
-	0, 15, 0, 0, 0, 15 }, { 1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 0, 0,
-	7, 0, 0, 0, 7, 15, 0, 0, 0, 15, 0, 0, 0, 15, 31, 0, 0, 0, 31, 0,
-	0, 0, 31 }, { 7, 0, 0, 0, 7, 0, 0, 0, 7, 15, 0, 0, 0, 15, 0, 0,
-	0, 15, 31, 0, 0, 0, 31, 0, 0, 0, 31, 15, 0, 0, 0, 15, 0, 0, 0,
-	15 }, { 15, 0, 0, 0, 15, 0, 0, 0, 15, 31, 0, 0, 0, 31, 0, 0, 0,
-	31, 15, 0, 0, 0, 15, 0, 0, 0, 15, 7, 0, 0, 0, 7, 0, 0, 0, 7 }
-};
-#endif
-
+bool tickFlag = 0;
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -152,19 +134,6 @@ int main(void)
 
 	Battery_Gauge();
 
-	Led_Fill_Buffer(0xEEE);
-
-	for(int i = 0; i < Animator.animationCount; i++) {
-		LedAnimation_t animation = Animator.animations[i];
-
-		for(int j = 0; j < animation.frameCount; j++) {
-			const LedFrame_t frame = animation.frames[j];
-
-			frame.instruction(frame.data);
-			HAL_Delay(animation.frameTime);
-		}
-	}
-
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -173,24 +142,14 @@ int main(void)
 	/* Infinite loop */
 	Log_Info("Start main...");
 
+	animationFlag = 1;
+
 	while (1) {
-		Log_Debug("a");
-
-#if FRAME_TEST
-		for(int i = 0; i < FRAME_COUNT; i++)  {
-			Led_Generate_Buffer(LedFrame[mainCnt]);
-			BufferSelect = !BufferSelect;
-
-			mainCnt++;
-			if (mainCnt >= FRAME_COUNT) {
-				mainCnt = 0;
-			}
-			HAL_Delay(100);
+		if(tickFlag) {
+			tickFlag = 0;
+			Button_Tick(&userBtn);
+			Animate();
 		}
-#endif
-
-		Battery_Print();
-		HAL_Delay(5000);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -269,3 +228,4 @@ void assert_failed(uint8_t *file, uint32_t line)
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
+
