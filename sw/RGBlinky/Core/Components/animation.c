@@ -134,6 +134,12 @@ const LedFrame_t flashes[] = {
 	{load, { FILL_RGB(0, 0, 0) } },
 };
 
+const LedFrame_t magic[] = {
+	{load, { FILL_RED(255) } },
+	{load, { FILL_GREEN(255) } },
+	{load, { FILL_BLUE(255) } },
+};
+
 
 
 
@@ -148,6 +154,8 @@ LedAnimation_t animations[] = {
 	{ ANIMATION(blinky, 50) },
 	{ ANIMATION(colors, 500) },
 	{ ANIMATION(flashes, 100) },
+	{ ANIMATION(magic, 10) },
+	{ ANIMATION(magic, 50) },
 };
 
 LedAnimator_t Animator = {
