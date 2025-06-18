@@ -20,8 +20,26 @@
 extern uint16_t LedBuffer[BUFFER_COUNT][BUFFER_SIZE + 4]; // Size = BUFFER_COUNT * BUFFER_SIZE * 2 byte
 extern bool BufferSelect;
 
-#define RGB_SCALE 2
+
+#define RGB_BUFFER_SCALE 2
+#define RGB_BRIGHTNESS_SCALE 2
+#define RGB_SCALE (RGB_BUFFER_SCALE + RGB_BRIGHTNESS_SCALE)
+
+#ifdef HW_V1_0
 #define RGB(r, g, b)  (b >> RGB_SCALE), (g >> RGB_SCALE), (r >> RGB_SCALE)
+#elif defined(HW_V1_1)
+#define RGB(r, g, b)  (r >> RGB_SCALE), (g >> RGB_SCALE), (b >> RGB_SCALE)
+#endif
+
+#define FILL_RGB(r, g, b) \
+    RGB(r, g, b), RGB(r, g, b), RGB(r, g, b), RGB(r, g, b), \
+    RGB(r, g, b), RGB(r, g, b), RGB(r, g, b), RGB(r, g, b), \
+    RGB(r, g, b), RGB(r, g, b), RGB(r, g, b), RGB(r, g, b)
+
+#define FILL_RED(val)     FILL_RGB(val, 0, 0)
+#define FILL_GREEN(val)   FILL_RGB(0, val, 0)
+#define FILL_BLUE(val)    FILL_RGB(0, 0, val)
+#define FILL_WHITE(val)   FILL_RGB(val, val, val)
 
 void Led_Init();
 void Led_Fill_Buffer(uint16_t color);

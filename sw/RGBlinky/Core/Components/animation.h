@@ -50,7 +50,7 @@ typedef struct {
 	uint8_t repeatCount;
 } LedAnimator_t;
 
-extern const LedFrame_t anim1[4];
+extern const LedFrame_t anim1[11];
 
 void load(uint8_t* data);
 void add(uint8_t* data);

@@ -151,6 +151,13 @@ const LedFrame_t anim1[] = {
 		{load, { RGB(255, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0),RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0) } },
 		{load, { RGB(0, 0, 0), RGB(0, 255, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0),RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0) } },
 		{load, { RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 255), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0),RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0) } },
+		{load, { FILL_RED(255) } },
+		{load, { FILL_RED(196) } },
+		{load, { FILL_RED(128) } },
+		{load, { FILL_RED(64) } },
+		{load, { FILL_GREEN(255) } },
+		{load, { FILL_BLUE(255) } },
+		{load, { FILL_WHITE(255) } },
 		{repeat, {5} },
 };
 
