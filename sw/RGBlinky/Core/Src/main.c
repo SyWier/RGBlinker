@@ -159,6 +159,16 @@ int main(void)
 
 	Led_Fill_Buffer(0xEEE);
 
+	uint8_t frameCount = sizeof(anim1)/sizeof(LedFrame_t);
+	Log_Info("Frame Count: %d", frameCount);
+
+	for(int cnt = 0; cnt < 5; cnt++) {
+		for(int i = 0; i < frameCount; i++) {
+			anim1[i].instruction(anim1[i].data);
+			HAL_Delay(1000);
+		}
+	}
+
 
   /* USER CODE END 2 */
 

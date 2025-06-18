@@ -7,6 +7,7 @@
 
 #include "animation.h"
 #include "led.h"
+#include "log.h"
 
 bool animation_debug_mode = 0;
 uint8_t animation_debug_state = 0;
@@ -146,51 +147,21 @@ const uint8_t gamma_lut[256] = {
    233, 234, 236, 237, 239, 240, 242, 243, 245, 246, 248, 249, 251, 252, 254, 255,
 };
 
+const LedFrame_t anim1[] = {
+		{load, { RGB(255, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0),RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0) } },
+		{load, { RGB(0, 0, 0), RGB(0, 255, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0),RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0) } },
+		{load, { RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 255), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0),RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0) } },
+		{repeat, {5} },
+};
 
-
-//typedef enum {
-//	LOAD, ADD, REPEAT, SHIFT
-//} LED_OPCODE_E;
-//
-//typedef struct {
-//	uint8_t red;
-//	uint8_t green;
-//	uint8_t blue;
-//} LedRgb_t;
-//typedef struct {
-//	uint16_t frameTime;
-//	LedRgb_t brightness[ROWS][COLS];
-//} LedFrame_t;
-//typedef struct {
-//	LED_OPCODE_E opcode;
-//	LedFrame_t frame;
-//} LedAnimation_t;
-//
-//LedAnimation_t animation[] = { LOAD, { 100, { { { 255, 0, 0 }, { 0, 255, 0 }, {
-//		0, 0, 255 } }, { { 255, 0, 0 }, { 0, 255, 0 }, { 0, 0, 255 } }, { { 255,
-//		0, 0 }, { 0, 255, 0 }, { 0, 0, 255 } }, { { 255, 0, 0 }, { 0, 255, 0 },
-//		{ 0, 0, 255 } } } }, REPEAT, };
-//
-//int leds[12];
-//
-//int instCnt = 0;
-//int instMax = 3;
-//typedef void (*instructions_t)(void);
-//void load() {
-//	leds = (int ) { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
-//}
-//void add() {
-//	for (int i = 0; i < 12; i++) {
-//
-//	}
-//}
-//void repeat() {
-//	if (instCnt + 1 == instMax)
-//		return;
-//
-//	for (int i = 0; i < 5; i++)
-//		instuctions[instCnt + 1]();
-//}
-//
-//instructions_t instuctions[] = { load, repeat, add };
+void load(uint8_t* data) {
+	Log_Debug("(Instr) load");
+	Led_Generate_Buffer(data);
+}
+void add(uint8_t* data) {
+	Log_Debug("(Instr) add");
+}
+void repeat(uint8_t* data) {
+	Log_Debug("(Instr) repeat: %d", data[0]);
+}
 

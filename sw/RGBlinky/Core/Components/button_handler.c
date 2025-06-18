@@ -10,6 +10,7 @@
 #include "led.h"
 #include "main.h"
 #include "animation.h"
+#include "battery.h"
 
 Button userBtn;
 
