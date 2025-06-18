@@ -77,32 +77,61 @@ void Animation_Prev() {
 }
 
 
+const LedFrame_t love[] = {
+	{load, { FILL_RGB(255, 0, 255) } },
+	{repeat, { 15 } },
+	{add, {FILL_RGB(-15, 0, -15)} },
+	{repeat, { 15 } },
+	{add, {FILL_RGB(15, 0, 15)} },
+};
+
 const LedFrame_t heart[] = {
-		{load, { FILL_RGB(255, 0, 255) } },
-		{repeat, { 15 } },
-		{add, {FILL_RGB(-15, 0, -15)} },
-		{repeat, { 15 } },
-		{add, {FILL_RGB(15, 0, 15)} },
+	{load, { FILL_RED(63) } },
+	{repeat, { 30 } },
+	{nope, {} },
+	{repeat, { 6 } },
+	{add, {FILL_RED(32)} },
+	{repeat, { 6 } },
+	{add, {FILL_RED(-32)} },
+};
+
+const LedFrame_t hue[] = {
+	{load, { FILL_RGB(255, 0, 0) } },
+	{repeat, { 15 } },
+	{add, {FILL_RGB(0, 17, 0)} },
+	{repeat, { 15 } },
+	{add, {FILL_RGB(-17, 0, 0)} },
+	{repeat, { 15 } },
+	{add, {FILL_RGB(0, 0, 17)} },
+	{repeat, { 15 } },
+	{add, {FILL_RGB(0, -17, 0)} },
+	{repeat, { 15 } },
+	{add, {FILL_RGB(17, 0, 0)} },
+	{repeat, { 15 } },
+	{add, {FILL_RGB(0, 0, -17)} },
 };
 
 const LedFrame_t blinky[] = {
-		{load, { RGB(255, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(255, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(255, 0, 0),RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0) } },
-		{repeat, { 35 } },
-		{shift, {1} },
+	{load, { RGB(255, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(255, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(255, 0, 0),RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0) } },
+	{repeat, { 35 } },
+	{shift, {1} },
 };
 
 const LedFrame_t colors[] = {
-		{load, { FILL_RED(255) } },
-		{load, { FILL_GREEN(255) } },
-		{load, { FILL_BLUE(255) } },
+	{load, { FILL_RED(255) } },
+	{load, { FILL_GREEN(255) } },
+	{load, { FILL_BLUE(255) } },
 };
+
 
 
 
 #define LEN(var) ( sizeof(var)/sizeof(var[0]) )
 
 LedAnimation_t animations[] = {
-		{heart, LEN(heart), 100},
+		{love, LEN(love), 100},
+		{heart, LEN(heart), 75},
+		{hue, LEN(hue), 50},
 		{blinky, LEN(blinky), 50},
 		{colors, LEN(colors), 500},
 };
@@ -175,6 +204,10 @@ void shift(const uint8_t* data) {
 
 		return;
 	}
+}
+
+void nope(const uint8_t* data) {
+	// Nothing is here...
 }
 
 void Animate() {
