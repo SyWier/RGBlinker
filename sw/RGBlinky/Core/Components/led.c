@@ -85,9 +85,6 @@ void Led_Generate_Buffer(const uint8_t frame[LED_CNT]) {
 		for (uint16_t n = 0; n < pwm; n++) {
 			LedBuffer[BufferSelect][row * LED_PWM_MAX + n] &= ~ANODE_PIN(row); // LED anode
 			LedBuffer[BufferSelect][row * LED_PWM_MAX + n] &= ~CATHODE_PIN(col); // LED cathode
-
-//			LedBuffer[BufferSelect][row * LED_PWM_MAX + n] &= ~ANODE_PIN(row); // LED anode
-//			LedBuffer[BufferSelect][row * LED_PWM_MAX + n] &= ~CATHODE_PIN( led); // LED cathode
 		}
 	}
 

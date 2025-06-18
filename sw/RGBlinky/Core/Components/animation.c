@@ -111,6 +111,12 @@ const LedFrame_t hue[] = {
 	{add, {FILL_RGB(0, 0, -17)} },
 };
 
+const LedFrame_t hue_circle[] = {
+	{load, { 255, 0, 0, 255, 127, 0, 255, 255, 0, 127, 255, 0, 0, 255, 0, 0, 255, 127, 0, 255, 255, 0, 127, 255, 0, 0, 255, 127, 0, 255, 255, 0, 255, 255, 0, 127 } },
+	{repeat, { 11 } },
+	{shift, {3} },
+};
+
 const LedFrame_t blinky[] = {
 	{load, { RGB(255, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(255, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(255, 0, 0),RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0) } },
 	{repeat, { 35 } },
@@ -123,6 +129,11 @@ const LedFrame_t colors[] = {
 	{load, { FILL_BLUE(255) } },
 };
 
+const LedFrame_t flashes[] = {
+	{load, { FILL_RGB(255, 255, 255) } },
+	{load, { FILL_RGB(0, 0, 0) } },
+};
+
 
 
 
@@ -132,8 +143,10 @@ LedAnimation_t animations[] = {
 		{love, LEN(love), 100},
 		{heart, LEN(heart), 75},
 		{hue, LEN(hue), 50},
+		{hue_circle, LEN(hue_circle), 100},
 		{blinky, LEN(blinky), 50},
 		{colors, LEN(colors), 500},
+		{flashes, LEN(flashes), 100},
 };
 
 LedAnimator_t Animator = {
