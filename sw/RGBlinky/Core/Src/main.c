@@ -33,6 +33,7 @@
 #include "battery.h"
 #include "led.h"
 #include "button_handler.h"
+#include "animation.h"
 
 // Redirect printf to UART
 int _write(int file, char *ptr, int len) {
@@ -125,6 +126,7 @@ int main(void)
   MX_ADC1_Init();
   MX_USART1_UART_Init();
   MX_TIM3_Init();
+  MX_TIM14_Init();
   /* USER CODE BEGIN 2 */
 
 	/* Build Print Build Time */
@@ -149,10 +151,14 @@ int main(void)
 
 	/* Start timers */
 	HAL_TIM_Base_Start_IT(&htim3);
+	HAL_TIM_Base_Start_IT(&htim14);
 
 	Battery_Gauge();
 
+//	Anim_1();
+
 	Led_Fill_Buffer(0xEEE);
+
 
   /* USER CODE END 2 */
 

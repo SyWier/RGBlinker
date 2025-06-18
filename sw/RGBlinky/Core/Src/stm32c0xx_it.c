@@ -24,6 +24,9 @@
 /* USER CODE BEGIN Includes */
 #include "tim.h"
 #include "log.h"
+#include "button_handler.h"
+#include "led.h"
+#include "battery.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -53,13 +56,11 @@
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-#include "button_handler.h"
-#include "led.h"
 
 /* USER CODE END 0 */
 
 /* External variables --------------------------------------------------------*/
-
+extern TIM_HandleTypeDef htim14;
 /* USER CODE BEGIN EV */
 
 /* USER CODE END EV */
@@ -144,6 +145,25 @@ void SysTick_Handler(void)
 /* please refer to the startup file (startup_stm32c0xx.s).                    */
 /******************************************************************************/
 
+/**
+  * @brief This function handles TIM14 global interrupt.
+  */
+void TIM14_IRQHandler(void)
+{
+  /* USER CODE BEGIN TIM14_IRQn 0 */
+  static uint16_t timCnt = 0;
+  timCnt++;
+  if(timCnt == 3600) {
+	  PowerOff();
+  }
+
+  /* USER CODE END TIM14_IRQn 0 */
+  HAL_TIM_IRQHandler(&htim14);
+  /* USER CODE BEGIN TIM14_IRQn 1 */
+
+  /* USER CODE END TIM14_IRQn 1 */
+}
+
 /* USER CODE BEGIN 1 */
 
 /**
@@ -156,19 +176,9 @@ void TIM3_IRQHandler(void) {
 	__HAL_TIM_CLEAR_FLAG(&htim3, TIM_FLAG_UPDATE);
 }
 
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
-//	if (htim->Instance == TIM3) {
-//		GPIOA->ODR = LedBuffer[!BufferSelect][pwmCnt];
-//		pwmCnt++;
-//		if (pwmCnt >= BUFFER_SIZE) {
-//			pwmCnt = 0;
-//		}
-//	}
-	Log_Error("?");
-}
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {}
 
-void EXTI4_15_IRQHandler(void)
-{
+void EXTI4_15_IRQHandler(void) {
     HAL_GPIO_EXTI_IRQHandler(BTN_Pin);
 }
 /* USER CODE END 1 */

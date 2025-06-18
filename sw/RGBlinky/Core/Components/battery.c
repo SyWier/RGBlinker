@@ -79,7 +79,6 @@ void Battery_Gauge() {
 
 	uint16_t millivolts = Battery_Get();
 	uint8_t batteryPercent = Battery_Percent(millivolts) / 20; // 0...100% -> 0...5
-	batteryPercent = 100/20;
 	if (batteryPercent > 4) {
 		batteryPercent = 4;
 	}
@@ -90,6 +89,21 @@ void Battery_Gauge() {
 	}
 
 	HAL_Delay(1500);
+}
+
+void PowerOff() {
+	Log_Important("Power off...zzz...");
+
+	// Pull down 3.3V ernable pin
+	HAL_PWREx_EnableGPIOPullDown(PWR_GPIO_B, PWR_GPIO_BIT_3);
+	HAL_PWREx_EnablePullUpPullDownConfig();
+
+	// Enable wake up on button rising edge
+	HAL_PWR_EnableWakeUpPin(PWR_WAKEUP_PIN3_HIGH);
+	__HAL_PWR_CLEAR_FLAG(PWR_FLAG_WUF3);
+
+	//Shutdown
+	HAL_PWREx_EnterSHUTDOWNMode();
 }
 
 

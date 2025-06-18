@@ -82,6 +82,49 @@ void Animation_Prev() {
 	}
 }
 
+void Anim_Load(uint8_t* buffer) {
+
+}
+void Anim_Add(uint8_t* buffer, uint8_t* pattern) {
+
+}
+void Anim_Shift(uint8_t* buffer, uint8_t cnt) {
+	uint8_t LUT[12] = {1, 12, 9, 6, 3, 11, 8, 5, 2, 10, 7, 4};
+
+	uint8_t tmp[LED_CNT];
+	memcpy(tmp, buffer, LED_CNT);
+
+	for(int i = 0; i < LED_CNT; i++) {
+		buffer[i] = buffer[i-1];
+	}
+	buffer[0] = tmp;
+}
+
+void Anim_1() {
+	uint8_t frame[LED_CNT] = {
+		RGB(255, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0),
+		RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0),
+		RGB(0, 0, 0),RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0)
+	};
+
+//	for(int i = 0; i < LED_CNT; i+=3) {
+//		frame[i] = 63;
+//	}
+
+	Led_Generate_Buffer(frame);
+
+//	for(int i = 0; i < 12; i++) {
+	while(1) {
+		Anim_Shift(frame, 1);
+		Led_Generate_Buffer(frame);
+		HAL_Delay(1000);
+	}
+
+}
+void Anim_2() {
+
+}
+
 // Gamma brightness lookup table <https://victornpb.github.io/gamma-table-generator>
 // gamma = 1.50 steps = 256 range = 0-255
 const uint8_t gamma_lut[256] = {
@@ -104,59 +147,50 @@ const uint8_t gamma_lut[256] = {
 };
 
 
-/*
- typedef enum {
- LOAD,
- ADD,
- REPEAT,
- RSHIFT,
- LSHIFT
- } LED_OPCODE_E;
 
- typedef struct {
- uint8_t red;
- uint8_t green;
- uint8_t blue;
- } LedRgb_t;
- typedef struct {
- uint16_t frameTime;
- LedRgb_t brightness[ROWS][COLS];
- } LedFrame_t;
- typedef struct {
- LED_OPCODE_E opcode;
- LedFrame_t frame;
- } LedAnimation_t;
+//typedef enum {
+//	LOAD, ADD, REPEAT, SHIFT
+//} LED_OPCODE_E;
+//
+//typedef struct {
+//	uint8_t red;
+//	uint8_t green;
+//	uint8_t blue;
+//} LedRgb_t;
+//typedef struct {
+//	uint16_t frameTime;
+//	LedRgb_t brightness[ROWS][COLS];
+//} LedFrame_t;
+//typedef struct {
+//	LED_OPCODE_E opcode;
+//	LedFrame_t frame;
+//} LedAnimation_t;
+//
+//LedAnimation_t animation[] = { LOAD, { 100, { { { 255, 0, 0 }, { 0, 255, 0 }, {
+//		0, 0, 255 } }, { { 255, 0, 0 }, { 0, 255, 0 }, { 0, 0, 255 } }, { { 255,
+//		0, 0 }, { 0, 255, 0 }, { 0, 0, 255 } }, { { 255, 0, 0 }, { 0, 255, 0 },
+//		{ 0, 0, 255 } } } }, REPEAT, };
+//
+//int leds[12];
+//
+//int instCnt = 0;
+//int instMax = 3;
+//typedef void (*instructions_t)(void);
+//void load() {
+//	leds = (int ) { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 };
+//}
+//void add() {
+//	for (int i = 0; i < 12; i++) {
+//
+//	}
+//}
+//void repeat() {
+//	if (instCnt + 1 == instMax)
+//		return;
+//
+//	for (int i = 0; i < 5; i++)
+//		instuctions[instCnt + 1]();
+//}
+//
+//instructions_t instuctions[] = { load, repeat, add };
 
- LedAnimation_t animation[] = {
- LOAD, { 100, { { {255, 0, 0}, {0, 255, 0}, {0, 0, 255} },
- { {255, 0, 0}, {0, 255, 0}, {0, 0, 255} },
- { {255, 0, 0}, {0, 255, 0}, {0, 0, 255} },
- { {255, 0, 0}, {0, 255, 0}, {0, 0, 255} } } },
- REPEAT,
- };
-
- int leds[12];
-
- int instCnt = 0;
- int instMax = 3;
- typedef void (*instructions_t)(void);
- void load() {
- leds = (int){0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
- }
- void add() {
- for(int i = 0; i < 12; i++) {
-
- }
- }
- void repeat() {
- if(instCnt+1 == instMax)
- return;
-
- for(int i = 0; i < 5; i++)
- instuctions[instCnt+1]();
- }
-
- instructions_t instuctions[] = {
- load, repeat, add
- };
- */
