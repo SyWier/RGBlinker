@@ -30,7 +30,9 @@ void btn_double_click(void) {
 void btn_long_press(void) {
 	Log_Debug("Long");
 	Log_Important("Going to SHUTDOWN mode... zzz...");
-	HAL_PWR_EnableWakeUpPin(PWR_WAKEUP_PIN3_HIGH);
+	HAL_PWREx_EnableGPIOPullDown(PWR_GPIO_B, PWR_GPIO_BIT_3); // Pull down 3.3V ernable pin
+	HAL_PWREx_EnablePullUpPullDownConfig();
+	HAL_PWR_EnableWakeUpPin(PWR_WAKEUP_PIN3_HIGH); // Enable wake up on button rising edge
 	__HAL_PWR_CLEAR_FLAG(PWR_FLAG_WUF3);
 	HAL_PWREx_EnterSHUTDOWNMode();
 }
