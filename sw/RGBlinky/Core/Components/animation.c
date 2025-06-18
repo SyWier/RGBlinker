@@ -141,13 +141,13 @@ const LedFrame_t flashes[] = {
 #define ANIMATION(animation, time) animation, (sizeof(animation)/sizeof(animation[0])), time
 
 LedAnimation_t animations[] = {
-		{ ANIMATION(love, 100) },
-		{ ANIMATION(heart, 75) },
-		{ ANIMATION(hue, 50) },
-		{ ANIMATION(hue_circle, 100) },
-		{ ANIMATION(blinky, 50) },
-		{ ANIMATION(colors, 500) },
-		{ ANIMATION(flashes, 100) },
+	{ ANIMATION(love, 100) },
+	{ ANIMATION(heart, 75) },
+	{ ANIMATION(hue, 50) },
+	{ ANIMATION(hue_circle, 100) },
+	{ ANIMATION(blinky, 50) },
+	{ ANIMATION(colors, 500) },
+	{ ANIMATION(flashes, 100) },
 };
 
 LedAnimator_t Animator = {
