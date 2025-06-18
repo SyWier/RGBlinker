@@ -27,8 +27,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "log.h"
-#include "battery.h"
 #include "led.h"
+#include "battery.h"
 #include "button_handler.h"
 #include "animation.h"
 

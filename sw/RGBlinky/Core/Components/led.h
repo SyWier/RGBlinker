@@ -26,9 +26,9 @@ extern bool BufferSelect;
 #define RGB_SCALE (RGB_BUFFER_SCALE + RGB_BRIGHTNESS_SCALE)
 
 #ifdef HW_V1_0
-#define RGB(r, g, b)  ((const uint8_t)((b) >> RGB_SCALE)), ((const uint8_t)((g) >> RGB_SCALE)), ((const uint8_t)((r) >> RGB_SCALE))
+#define RGB(r, g, b)  ((uint8_t)(b)), ((uint8_t)(g)), ((uint8_t)(r))
 #elif defined(HW_V1_1)
-#define RGB(r, g, b)  ((const uint8_t)((r) >> RGB_SCALE)), ((const uint8_t)((g) >> RGB_SCALE)), ((const uint8_t)((b) >> RGB_SCALE))
+#define RGB(r, g, b)  ((uint8_t)(r)), ((uint8_t)(g)), ((uint8_t)(b))
 #endif
 
 #define FILL_RGB(r, g, b) \

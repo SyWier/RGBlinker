@@ -70,6 +70,7 @@ void Led_Generate_Buffer(const uint8_t frame[LED_CNT]) {
 //			uint8_t pwm = gamma_lut[frame[row * LED_NUM + led]];
 			uint8_t pwm = frame[row * LED_NUM + led];
 			pwm = gamma_lut[pwm];
+			pwm = pwm >> RGB_SCALE;
 			if (pwm > LED_PWM_MAX) {
 				pwm = LED_PWM_MAX;
 			}
