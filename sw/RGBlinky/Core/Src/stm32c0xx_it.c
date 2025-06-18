@@ -160,6 +160,7 @@ void TIM14_IRQHandler(void)
   static uint8_t battCnt = 0;
   battCnt++;
   if(battCnt == 10) {
+	  battCnt = 0;
 	  Battery_Print();
   }
 

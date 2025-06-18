@@ -39,11 +39,11 @@ uint16_t Battery_Get() {
 
 uint8_t Battery_Percent(uint16_t millivolts) {
     if (millivolts >= 3000) return 100;
-    else if (millivolts >= 2900) return 85 + (millivolts - 2900) * 15 / 100;
-    else if (millivolts >= 2800) return 60 + (millivolts - 2800) * 25 / 100;
-    else if (millivolts >= 2700) return 30 + (millivolts - 2700) * 30 / 100;
-    else if (millivolts >= 2600) return 10 + (millivolts - 2600) * 20 / 100;
-    else if (millivolts >= 2500) return (millivolts - 2500) * 10 / 100;
+    else if (millivolts >= 2900) return 95 + (millivolts - 2900) *  5 / 100;
+    else if (millivolts >= 2800) return 80 + (millivolts - 2800) * 15 / 100;
+    else if (millivolts >= 2600) return 40 + (millivolts - 2600) * 40 / 200;
+    else if (millivolts >= 2200) return  5 + (millivolts - 2200) * 35 / 400;
+    else if (millivolts >= 2000) return (millivolts - 2000) * 5 / 200;
     else return 0;
 }
 

@@ -125,13 +125,13 @@ int main(void)
 
 	/* Init components */
 	Led_Init();
-	Battery_Init();
 	Button_Init(&userBtn);
 
 	/* Start timers */
 	HAL_TIM_Base_Start_IT(&htim3);
 	HAL_TIM_Base_Start_IT(&htim14);
 
+	Battery_Init();
 	Battery_Gauge();
 
   /* USER CODE END 2 */
