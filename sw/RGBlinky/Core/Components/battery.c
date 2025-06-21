@@ -83,12 +83,44 @@ void Battery_Gauge() {
 		batteryPercent = 4;
 	}
 
-	for(int i = 0; i <= batteryPercent; i++) {
-		Led_Generate_Buffer(BatteryFrame[i]);
-		HAL_Delay(125);
+	batteryPercent = 4;
+
+	uint16_t lastTime = 0;
+	uint16_t frameTime = 125;
+	bool buttonPressed = HAL_GPIO_ReadPin(BTN_GPIO_Port, BTN_Pin);
+
+	for(int i = 0; i <= batteryPercent; /**/) {
+		// Exit if button is pressed
+		if (HAL_GPIO_ReadPin(BTN_GPIO_Port, BTN_Pin) == 0) {
+			buttonPressed = 0;
+		}
+
+		if (buttonPressed == 0 && HAL_GPIO_ReadPin(BTN_GPIO_Port, BTN_Pin)) {
+			return;
+		}
+
+		// Display frames
+		if(HAL_GetTick() - lastTime > frameTime) {
+			lastTime = HAL_GetTick();
+			Led_Generate_Buffer(BatteryFrame[i]);
+			i++;
+		}
 	}
 
-	HAL_Delay(1500);
+	uint16_t waitTime = 2000;
+
+	while(HAL_GetTick() - lastTime < waitTime) {
+		// Exit if button is pressed
+		if (HAL_GPIO_ReadPin(BTN_GPIO_Port, BTN_Pin) == 0) {
+			buttonPressed = 0;
+		}
+
+		if (buttonPressed == 0 && HAL_GPIO_ReadPin(BTN_GPIO_Port, BTN_Pin)) {
+			return;
+		}
+	}
+
+	HAL_Delay(250);
 }
 
 void PowerOff() {
@@ -105,6 +137,3 @@ void PowerOff() {
 	//Shutdown
 	HAL_PWREx_EnterSHUTDOWNMode();
 }
-
-
-

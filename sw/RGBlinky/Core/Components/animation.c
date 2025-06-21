@@ -76,7 +76,6 @@ void Animation_Prev() {
 	Animator.animationIndex--;
 }
 
-
 const LedFrame_t love[] = {
 	{load, { FILL_RGB(255, 0, 255) } },
 	{repeat, { 15 } },
@@ -117,6 +116,13 @@ const LedFrame_t hue_circle[] = {
 	{shift, {3} },
 };
 
+const LedFrame_t amber[] = {
+	{load, { FILL_RGB(64, 48, 0) } },
+	{add, { RGB(127, 95, 0) } },
+	{repeat, { 11 } },
+	{shift, {15} },
+};
+
 const LedFrame_t blinky[] = {
 	{load, { RGB(255, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(255, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0), RGB(255, 0, 0),RGB(0, 0, 0), RGB(0, 0, 0), RGB(0, 0, 0) } },
 	{repeat, { 35 } },
@@ -141,9 +147,6 @@ const LedFrame_t magic[] = {
 };
 
 
-
-
-//#define LEN(var) ( sizeof(var)/sizeof(var[0]) )
 #define ANIMATION(animation, time) animation, (sizeof(animation)/sizeof(animation[0])), time
 
 LedAnimation_t animations[] = {
@@ -151,6 +154,7 @@ LedAnimation_t animations[] = {
 	{ ANIMATION(heart, 75) },
 	{ ANIMATION(hue, 50) },
 	{ ANIMATION(hue_circle, 100) },
+	{ ANIMATION(amber, 200) },
 	{ ANIMATION(blinky, 50) },
 	{ ANIMATION(colors, 500) },
 	{ ANIMATION(flashes, 100) },
@@ -219,10 +223,10 @@ void shift(const uint8_t* data) {
 		memcpy(temp, Animator.pwmBuffer, val);
 
 		// Shift the rest to the left
-		memmove(Animator.pwmBuffer, &Animator.pwmBuffer[val], LED_CNT - val);
+		memmove(Animator.pwmBuffer, &(Animator.pwmBuffer[val]), LED_CNT - val);
 
 		// Copy temp to the end
-		memcpy(&Animator.pwmBuffer[LED_CNT - val], temp, val);
+		memcpy(&(Animator.pwmBuffer[LED_CNT - val]), temp, val);
 
 		return;
 	}

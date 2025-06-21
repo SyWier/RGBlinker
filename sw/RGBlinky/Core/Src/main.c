@@ -133,7 +133,6 @@ int main(void)
 
 	Battery_Init();
 	Battery_Gauge();
-
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -208,6 +207,7 @@ void Error_Handler(void)
   /* USER CODE BEGIN Error_Handler_Debug */
 	/* User can add his own implementation to report the HAL error return state */
 	__disable_irq();
+	Log_Error("Critical Error!");
 	while (1) {}
   /* USER CODE END Error_Handler_Debug */
 }
