@@ -11,17 +11,14 @@
 #include "gpio.h"
 #include "stdbool.h"
 
-#define BTN_DEBOUNCE_MS	50		// Ignore contact bounce
-#define BTN_DOUBLE_MS	200     // Max gap before 2nd click
-#define BTN_LONG_MS		2000    // Press ≥ 2.0 s
-#define BTN_VLONG_MS	5000    // Press ≥ 5.0 s
-
 typedef enum {
 	BTN_BOOT,
     BTN_IDLE,
-    BTN_PRESSED,
+    BTN_SINGLE,
 	BTN_RELEASED,
-	BTN_DOUBLE
+	BTN_DOUBLE,
+	BTN_LONG,
+	BTN_EXTRA,
 } btn_state_t;
 
 typedef struct {
@@ -32,8 +29,6 @@ typedef struct {
     uint32_t      t_stamp;
 
     bool is_initialized;
-
-    void (*action)(void);
 } Button;
 
 extern Button userBtn;

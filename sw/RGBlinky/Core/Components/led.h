@@ -22,8 +22,7 @@ extern bool BufferSelect;
 
 
 #define RGB_BUFFER_SCALE 2
-#define RGB_BRIGHTNESS_SCALE 2
-#define RGB_SCALE (RGB_BUFFER_SCALE + RGB_BRIGHTNESS_SCALE)
+extern uint8_t RgbBrigntnessScale;
 
 #ifdef HW_V1_0
 #define RGB(r, g, b)  ((uint8_t)(b)), ((uint8_t)(g)), ((uint8_t)(r))
