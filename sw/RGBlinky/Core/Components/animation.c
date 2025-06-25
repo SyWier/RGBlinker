@@ -146,7 +146,6 @@ const LedFrame_t magic[] = {
 	{load, { FILL_BLUE(255) } },
 };
 
-
 #define ANIMATION(animation, time) animation, (sizeof(animation)/sizeof(animation[0])), time
 
 LedAnimation_t animations[] = {
