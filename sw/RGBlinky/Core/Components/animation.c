@@ -96,18 +96,18 @@ const LedFrame_t heart[] = {
 
 const LedFrame_t hue[] = {
 	{load, { FILL_RGB(255, 0, 0) } },
-	{repeat, { 15 } },
-	{add, {FILL_RGB(0, 17, 0)} },
-	{repeat, { 15 } },
-	{add, {FILL_RGB(-17, 0, 0)} },
-	{repeat, { 15 } },
-	{add, {FILL_RGB(0, 0, 17)} },
-	{repeat, { 15 } },
-	{add, {FILL_RGB(0, -17, 0)} },
-	{repeat, { 15 } },
-	{add, {FILL_RGB(17, 0, 0)} },
-	{repeat, { 15 } },
-	{add, {FILL_RGB(0, 0, -17)} },
+	{repeat, { 51 } },
+	{add, {FILL_RGB(0, 5, 0)} },
+	{repeat, { 51 } },
+	{add, {FILL_RGB(-5, 0, 0)} },
+	{repeat, { 51 } },
+	{add, {FILL_RGB(0, 0, 5)} },
+	{repeat, { 51 } },
+	{add, {FILL_RGB(0, -5, 0)} },
+	{repeat, { 51 } },
+	{add, {FILL_RGB(5, 0, 0)} },
+	{repeat, { 51 } },
+	{add, {FILL_RGB(0, 0, -5)} },
 };
 
 const LedFrame_t hue_circle[] = {
@@ -151,7 +151,7 @@ const LedFrame_t magic[] = {
 LedAnimation_t animations[] = {
 	{ ANIMATION(love, 100) },
 	{ ANIMATION(heart, 75) },
-	{ ANIMATION(hue, 50) },
+	{ ANIMATION(hue, 25) },
 	{ ANIMATION(hue_circle, 100) },
 	{ ANIMATION(amber, 200) },
 	{ ANIMATION(blinky, 50) },

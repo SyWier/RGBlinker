@@ -10,19 +10,21 @@
 
 #include "main.h"
 
+
+
 #define LED_ROWS 4
 #define LED_NUM 9
 #define LED_CNT LED_ROWS * LED_NUM
-#define LED_PWM_MAX 63 // 0...15 -> 16 steps
+
+#define RGB_BUFFER_SCALE 2
+extern uint8_t RgbBrigntnessScale;
+
+#define LED_PWM_MAX ( (256>>RGB_BUFFER_SCALE) - 1 )
 #define BUFFER_SIZE LED_ROWS * LED_PWM_MAX
 #define BUFFER_COUNT 2
 
 extern uint16_t LedBuffer[BUFFER_COUNT][BUFFER_SIZE + 4]; // Size = BUFFER_COUNT * BUFFER_SIZE * 2 byte
 extern bool BufferSelect;
-
-
-#define RGB_BUFFER_SCALE 2
-extern uint8_t RgbBrigntnessScale;
 
 #ifdef HW_V1_0
 #define RGB(r, g, b)  ((uint8_t)(b)), ((uint8_t)(g)), ((uint8_t)(r))

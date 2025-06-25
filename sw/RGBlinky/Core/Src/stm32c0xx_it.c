@@ -176,10 +176,13 @@ void TIM14_IRQHandler(void)
 /**
   * @brief This function handles TIM3 global interrupt.
   */
+static uint16_t pwmCnt = 0;
 void TIM3_IRQHandler(void) {
-	static uint16_t pwmCnt = 0;
 	GPIOA->ODR = LedBuffer[!BufferSelect][pwmCnt];
-	pwmCnt = (pwmCnt + 1) & 0xFF;
+	pwmCnt++;
+	if (pwmCnt >= BUFFER_SIZE) {
+	    pwmCnt = 0;
+	}
 	__HAL_TIM_CLEAR_FLAG(&htim3, TIM_FLAG_UPDATE);
 }
 
