@@ -7,7 +7,7 @@
 
 #include "led.h"
 
-uint16_t LedBuffer[BUFFER_COUNT][BUFFER_SIZE + 4];
+uint16_t LedBuffer[BUFFER_COUNT][BUFFER_SIZE];
 bool BufferSelect = 0;
 uint8_t RgbBrigntnessScale = 2;
 
@@ -42,7 +42,7 @@ void Led_Init() {
 	// Init LED buffer (turn off all LEDs by default))
 	// The last values are unused for optimalization reasons
 	uint16_t reg = GPIOA->ODR | 0x1FFF;
-	for (uint16_t i = 0; i < BUFFER_SIZE + 4; i++) {
+	for (uint16_t i = 0; i < BUFFER_SIZE; i++) {
 		LedBuffer[0][i] = reg;
 		LedBuffer[1][i] = reg;
 	}

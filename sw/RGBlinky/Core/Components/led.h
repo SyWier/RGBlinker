@@ -23,7 +23,7 @@ extern uint8_t RgbBrigntnessScale;
 #define BUFFER_SIZE LED_ROWS * LED_PWM_MAX
 #define BUFFER_COUNT 2
 
-extern uint16_t LedBuffer[BUFFER_COUNT][BUFFER_SIZE + 4]; // Size = BUFFER_COUNT * BUFFER_SIZE * 2 byte
+extern uint16_t LedBuffer[BUFFER_COUNT][BUFFER_SIZE]; // Size = BUFFER_COUNT * BUFFER_SIZE * 2 byte
 extern bool BufferSelect;
 
 #ifdef HW_V1_0
