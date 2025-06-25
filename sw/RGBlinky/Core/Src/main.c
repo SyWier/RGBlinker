@@ -109,17 +109,17 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
 	/* Build Print Build Time */
-	Log_Important("Build time: " __DATE__ " " __TIME__);
-	Log_Important("Hardware version: " HW_VERSION);
-	Log_Important("Software version: " SW_VERSION);
+    log_message(LOG_IMP, "BUILD", "Build time: " __DATE__ " " __TIME__);
+    log_message(LOG_IMP, "BUILD", "Hardware version: " HW_VERSION);
+    log_message(LOG_IMP, "BUILD", "Software version: " SW_VERSION);
 
 //	Log_Error("Reset status: %x", RCC->CSR2);
 
 	// Check if we were in standby mode
 	if(__HAL_PWR_GET_FLAG(PWR_FLAG_WUF3)) {
-		Log_Info("Device waked up.");
+		log_message(LOG_INF, "MAIN", "Device waked up.");
 	} else {
-		Log_Info("Device powered up.");
+		log_message(LOG_INF, "MAIN", "Device powered up.");
 	}
 	__HAL_PWR_CLEAR_FLAG(PWR_FLAG_WUF3);
 
@@ -139,7 +139,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
 
 	/* Infinite loop */
-	Log_Info("Start main...");
+	log_message(LOG_INF, "MAIN", "Start main...");
 
 	animationFlag = 1;
 
@@ -207,7 +207,7 @@ void Error_Handler(void)
   /* USER CODE BEGIN Error_Handler_Debug */
 	/* User can add his own implementation to report the HAL error return state */
 	__disable_irq();
-	Log_Error("Critical Error!");
+	log_message(LOG_ERR, "ERROR", "Critical Error!");
 	while (1) {}
   /* USER CODE END Error_Handler_Debug */
 }

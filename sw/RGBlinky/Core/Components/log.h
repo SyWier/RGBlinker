@@ -8,10 +8,18 @@
 #ifndef COMPONENTS_LOG_H_
 #define COMPONENTS_LOG_H_
 
-void Log_Important(const char* format, ...);
-void Log_Error(const char* format, ...);
-void Log_Warning(const char* format, ...);
-void Log_Info(const char* format, ...);
-void Log_Debug(const char* format, ...);
+#include <stdio.h>
+
+typedef enum {
+    LOG_IMP = 0,
+    LOG_ERR,
+    LOG_WRN,
+    LOG_INF,
+    LOG_DBG,
+} LogLevel;
+
+extern LogLevel global_log_level;
+
+void log_message(LogLevel level, const char *tag, const char *fmt, ...);
 
 #endif /* COMPONENTS_LOG_H_ */

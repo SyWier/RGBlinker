@@ -33,7 +33,7 @@ static inline uint8_t btn_elapsed(Button *b, uint32_t duration_ms) {
 	}
 }
 static inline void btn_set_state(Button *b, btn_state_t new_state, const char* msg) {
-    Log_Debug(msg);
+	log_message(LOG_DBG, "BTN", msg);
     b->state = new_state;
     b->t_stamp = HAL_GetTick();
 }
@@ -104,10 +104,12 @@ void Button_Tick(Button *b) {
 		return;
 	}
 
+//	log_message(LOG_DBG, "???", "Tick");
+
 	switch(b->state) {
 	case BTN_BOOT:
 		if(!btn_level(b)) {
-			btn_set_state(b, BTN_IDLE, "(btn) BOOT to IDLE");
+			btn_set_state(b, BTN_IDLE, "BOOT to IDLE");
 		}
 
 		break;
@@ -119,7 +121,7 @@ void Button_Tick(Button *b) {
 
 		// IDLE to SINGLE
 		if(btn_level(b)) {
-			btn_set_state(b, BTN_SINGLE, "(btn) IDLE to SINGLE");
+			btn_set_state(b, BTN_SINGLE, "IDLE to SINGLE");
 			break;
 		}
 
@@ -132,14 +134,14 @@ void Button_Tick(Button *b) {
 
 		// SINGLE to RELEASED
 		if (!btn_level(b)) {
-			btn_set_state(b, BTN_RELEASED, "(btn) SINGLE to RELEASED");
+			btn_set_state(b, BTN_RELEASED, "SINGLE to RELEASED");
 			break;
 		}
 
 		// SINGLE to LONG
 		if(btn_elapsed(b, BTN_LONG_MS)) {
 			btn_single_to_long();
-			btn_set_state(b, BTN_LONG, "(btn) SINGLE to LONG");
+			btn_set_state(b, BTN_LONG, "SINGLE to LONG");
 			break;
 		}
 
@@ -148,14 +150,14 @@ void Button_Tick(Button *b) {
 		// LONG to IDLE
 		if (!btn_level(b)) {
 			btn_long_press();
-			btn_set_state(b, BTN_IDLE, "(btn) LONG to IDLE");
+			btn_set_state(b, BTN_IDLE, "LONG to IDLE");
 			break;
 		}
 
 		// LONG to EXTRA
 		if(btn_elapsed(b, BTN_EXTRA_MS)) {
 			btn_long_to_extra();
-			btn_set_state(b, BTN_EXTRA, "(btn) LONG to EXTRA");
+			btn_set_state(b, BTN_EXTRA, "LONG to EXTRA");
 			break;
 		}
 
@@ -164,7 +166,7 @@ void Button_Tick(Button *b) {
 		// EXTRA to IDLE
 		if (!btn_level(b)) {
 			btn_extra_press();
-			btn_set_state(b, BTN_IDLE, "(btn) EXTRA to IDLE");
+			btn_set_state(b, BTN_IDLE, "EXTRA to IDLE");
 			break;
 		}
 
@@ -179,7 +181,7 @@ void Button_Tick(Button *b) {
 		// Button is pressed a second time -> double click
 		if (btn_level(b)) {
 			btn_double_click();
-			btn_set_state(b, BTN_DOUBLE, "(btn) RELEASED to DOUBLE");
+			btn_set_state(b, BTN_DOUBLE, "RELEASED to DOUBLE");
 			break;
 		}
 
@@ -187,7 +189,7 @@ void Button_Tick(Button *b) {
 		// ~ Single click
 		if(btn_elapsed(b, BTN_DOUBLE_MS)) {
 			btn_single_click();
-			btn_set_state(b, BTN_IDLE, "(btn) RELEASED to IDLE");
+			btn_set_state(b, BTN_IDLE, "RELEASED to IDLE");
 			break;
 		}
 
@@ -200,13 +202,13 @@ void Button_Tick(Button *b) {
 
 		// DOUBLE to IDLE
 		if (!btn_level(b)) {
-			btn_set_state(b, BTN_IDLE, "(btn) DOUBLE to IDLE");
+			btn_set_state(b, BTN_IDLE, "DOUBLE to IDLE");
 			break;
 		}
 
 		break;
 	default:
-		Log_Error("(btn) UNKNOWN State!");
+		log_message(LOG_ERR, "BTN", "UNKNOWN State!");
 		b->state = BTN_IDLE;
 		b->t_stamp = HAL_GetTick();
 		break;

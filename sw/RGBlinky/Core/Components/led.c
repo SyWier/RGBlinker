@@ -80,7 +80,6 @@ void Led_Generate_Buffer(const uint8_t frame[LED_CNT]) {
 			pwm = LED_PWM_MAX;
 		}
 
-		uint8_t index = log_lut[i];
 		uint8_t row = row_lut[i];
 		uint8_t col = col_lut[i];
 

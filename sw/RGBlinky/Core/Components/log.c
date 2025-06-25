@@ -5,87 +5,39 @@
  *      Author: Daniel
  */
 
+// log.c
+#include "main.h"
 #include "log.h"
-#include <stdio.h>
 #include <stdarg.h>
 
-#define ESCAPE_NORM    "\033[0m"
-#define ESCAPE_BLACK   "\033[30m"
-#define ESCAPE_RED     "\033[31m"
-#define ESCAPE_GREEN   "\033[32m"
-#define ESCAPE_YELLOW  "\033[33m"
-#define ESCAPE_BLUE    "\033[34m"
-#define ESCAPE_MAGENTA "\033[35m"
-#define ESCAPE_CYAN    "\033[36m"
-#define ESCAPE_WHITE   "\033[37m"
-
-
-#define LOG_ERR 1
-#define LOG_WRR 2
-#define LOG_INF 3
-#define LOG_DBG 4
-
-#define DEBUG_LEVEL LOG_DBG
-
-void Log_Important(const char* format, ...) {
-    printf(ESCAPE_MAGENTA "[!!!] ");
-
-    va_list args;
-    va_start(args, format);
-    vprintf(format, args);
-    va_end(args);
-
-    printf(ESCAPE_NORM "\r\n");
-}
-
-void Log_Error(const char* format, ...) {
-#if DEBUG_LEVEL >= LOG_ERR
-    printf(ESCAPE_RED "[ERR] ");
-
-    va_list args;
-    va_start(args, format);
-    vprintf(format, args);
-    va_end(args);
-
-    printf(ESCAPE_NORM "\r\n");
+// Global log level (can be changed at runtime)
+#ifdef DEBUG
+LogLevel global_log_level = LOG_DBG;
+#else
+LogLevel global_log_level = LOG_ERR;
 #endif
-}
 
-void Log_Warning(const char* format, ...) {
-#if DEBUG_LEVEL >= LOG_WRR
-    printf(ESCAPE_YELLOW "[WRR] ");
+static const char *level_colors[] = {
+    "\x1b[1;35m", // Magenta - IMPORTANT
+    "\x1b[1;31m", // Red     - ERROR
+    "\x1b[1;33m", // Yellow  - WARNING
+    "\x1b[1;36m", // Cyan    - INFO
+    "\x1b[0;37m"  // Gray    - DEBUG
+};
 
-    va_list args;
-    va_start(args, format);
-    vprintf(format, args);
-    va_end(args);
+#define LOG_RESET_COLOR "\x1b[0m"
 
-    printf(ESCAPE_NORM "\r\n");
-#endif
-}
+void log_message(LogLevel level, const char *tag, const char *fmt, ...) {
+    if(level > global_log_level) return;  // Filter out lower-priority logs
 
-void Log_Info(const char* format, ...) {
-#if DEBUG_LEVEL >= LOG_INF
-    printf(ESCAPE_GREEN "[INF] ");
+    uint32_t ms = HAL_GetTick();  // Milliseconds since HAL init
 
-    va_list args;
-    va_start(args, format);
-    vprintf(format, args);
-    va_end(args);
-
-    printf(ESCAPE_NORM "\r\n");
-#endif
-}
-
-void Log_Debug(const char* format, ...) {
-#if DEBUG_LEVEL >= LOG_DBG
-    printf(ESCAPE_NORM "[DBG] ");
+    printf("%s[%lu ms][%s] ", level_colors[level], ms, tag);
 
     va_list args;
-    va_start(args, format);
-    vprintf(format, args);
+    va_start(args, fmt);
+    vprintf(fmt, args);
     va_end(args);
 
-    printf(ESCAPE_NORM "\r\n");
-#endif
+    printf(LOG_RESET_COLOR "\r\n");
 }

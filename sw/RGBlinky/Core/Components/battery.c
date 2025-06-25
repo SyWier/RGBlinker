@@ -24,8 +24,8 @@ void Battery_Init() {
 	uint16_t millivolts = Battery_Get();
 
 	// Print battery voltage with no load
-	Log_Info("VDDA: %dmV", millivolts);
-	Log_Info("Percentage: %d%%", Battery_Percent(millivolts));
+	log_message(LOG_INF, "BATT", "VDDA: %dmV", millivolts);
+	log_message(LOG_INF, "BATT", "Percentage: %d%%", Battery_Percent(millivolts));
 }
 
 uint16_t Battery_Get() {
@@ -49,8 +49,8 @@ uint8_t Battery_Percent(uint16_t millivolts) {
 
 void Battery_Print() {
 	uint16_t millivolts = Battery_Get();
-	Log_Debug("VDDA: %dmV", millivolts);
-	Log_Debug("Percentage: %d%%", Battery_Percent(millivolts));
+	log_message(LOG_DBG, "BATT", "VDDA: %dmV", millivolts);
+	log_message(LOG_DBG, "BATT", "Percentage: %d%%", Battery_Percent(millivolts));
 }
 
 void Battery_Gauge() {
@@ -124,7 +124,7 @@ void Battery_Gauge() {
 }
 
 void PowerOff() {
-	Log_Important("Power off...zzz...");
+	log_message(LOG_IMP, "BATT", "Power off...zzz...");
 
 	// Pull down 3.3V ernable pin
 	HAL_PWREx_EnableGPIOPullDown(PWR_GPIO_B, PWR_GPIO_BIT_3);
