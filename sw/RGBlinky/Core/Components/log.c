@@ -14,7 +14,7 @@
 #ifdef DEBUG
 LogLevel global_log_level = LOG_DBG;
 #else
-LogLevel global_log_level = LOG_ERR;
+LogLevel global_log_level = LOG_INF;
 #endif
 
 static const char *level_colors[] = {

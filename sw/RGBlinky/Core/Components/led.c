@@ -61,7 +61,7 @@ void Led_Fill_Buffer(uint16_t color) {
 #define ANODE_PIN(row)     (1U << (row))
 #define CATHODE_PIN(col)   (1U << ((col) + LED_ROWS))
 
-void Led_Generate_Buffer(const uint8_t frame[LED_CNT]) {
+__attribute__((optimize("-O2"))) void Led_Generate_Buffer(const uint8_t frame[LED_CNT]) {
 	// Delete buffer (keep upper bits)
 	// LED anode, cathode HIGH -> Turn OFF
 	uint16_t reg = GPIOA->ODR | 0x1FFF;
