@@ -231,6 +231,7 @@ void nope(const uint8_t* data) {
 }
 
 void Animate() {
+//	uint32_t last_time = HAL_GetTick();
 	// Return if no animation is running
 	if(animationFlag == 0) {
 		return;
@@ -261,5 +262,7 @@ void Animate() {
 	if(Animator.frameIndex >= animation.frameCount) {
 		Animator.frameIndex = 0;
 	}
+
+//	printf("%d\r\n", HAL_GetTick() - last_time);
 }
 
