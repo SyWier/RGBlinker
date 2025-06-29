@@ -12,12 +12,6 @@
 #include "stdbool.h"
 #include "led.h"
 
-extern bool animation_debug_mode;
-
-void Animation_Debug_Handle();
-void Animation_Debug_Next();
-void Animation_Debug_Prev();
-
 void Animation_Handle();
 void Animation_Next();
 void Animation_Prev();
