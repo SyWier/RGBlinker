@@ -44,7 +44,7 @@ void btn_single_click() {
 		Animation_Next();
 	} else {
 		if(RgbBrigntnessScale == 0) {
-			RgbBrigntnessScale = 5;
+			RgbBrigntnessScale = RGB_BRIGHTNESS_MAX;
 		}
 		RgbBrigntnessScale--;
 		Led_Generate_Buffer(white);
@@ -55,7 +55,7 @@ void btn_double_click() {
 		Animation_Prev();
 	} else {
 		RgbBrigntnessScale++;
-		if(RgbBrigntnessScale >= 5) {
+		if(RgbBrigntnessScale >= RGB_BRIGHTNESS_MAX) {
 			RgbBrigntnessScale = 0;
 		}
 		Led_Generate_Buffer(white);

@@ -17,6 +17,7 @@
 #define LED_CNT LED_ROWS * LED_NUM
 
 #define RGB_BUFFER_SCALE 2
+#define RGB_BRIGHTNESS_MAX 4
 extern uint8_t RgbBrigntnessScale;
 
 #define LED_PWM_MAX ( (256>>RGB_BUFFER_SCALE) - 1 )

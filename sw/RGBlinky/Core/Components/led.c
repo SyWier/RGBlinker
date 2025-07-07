@@ -73,8 +73,12 @@ __attribute__((optimize("-O2"))) void Led_Generate_Buffer(const uint8_t frame[LE
 	for(uint8_t i = 0; i < LED_CNT; i++) {
 		uint8_t pwm = frame[i];
 		pwm = gamma_lut[pwm]; // Gamma correction
-		pwm = pwm >> RGB_BUFFER_SCALE; // Scale down to buffer
-		pwm = pwm >> RgbBrigntnessScale; // Scale down brightness
+//		pwm = pwm >> RGB_BUFFER_SCALE; // Scale down to buffer
+
+		uint8_t brightnress_lut[] = {255, 128, 64, 32, 16, 8};
+
+		pwm = ((pwm * brightnress_lut[RGB_BUFFER_SCALE + RgbBrigntnessScale] ) + 255 ) >> 8;
+//		pwm = pwm >> RgbBrigntnessScale; // Scale down brightness
 
 		if (pwm > LED_PWM_MAX) { //Trim to max
 			pwm = LED_PWM_MAX;

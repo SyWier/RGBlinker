@@ -45,6 +45,10 @@ const LedFrame_t heart[] = {
 	{add, {FILL_RED(32)} },
 	{repeat, { 6 } },
 	{add, {FILL_RED(-32)} },
+	{repeat, { 6 } },
+	{add, {FILL_RED(32)} },
+	{repeat, { 6 } },
+	{add, {FILL_RED(-32)} },
 };
 
 const LedFrame_t hue[] = {
