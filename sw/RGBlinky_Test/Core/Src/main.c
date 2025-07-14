@@ -18,7 +18,6 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-#include "adc.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -34,27 +33,22 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define HW_V1_0
+#define HW_VERSION "hw-v1.0"
+#define SW_VERSION "sw-v1.1"
+
+#define COLOR_MAGENTA "\x1b[1;35m"
+#define COLOR_CYAN "\x1b[1;36m"
 
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-void LedInit() {
-	HAL_GPIO_WritePin(EN_3V3_GPIO_Port, EN_3V3_Pin, 1); // Turn on 3.3V
-}
 
-void LedOneByOne(uint32_t ms) {
-	uint32_t reg;
-
-	for(uint8_t i = 0; i < 4; i++) {
-		for(uint8_t j = 4; j <= 12; j++) {
-			reg = 0x1FFF;				// Set all 13 bits high (anodes/cathodes OFF)
-			reg &= ~(1 << i);           // Set selected anode HIGH (set P-MOSFET gate LOW)
-			reg &= ~(1 << j);           // Set selected cathode LOW (sink current)
-			GPIOA->ODR = (GPIOA->ODR & ~0x1FFF) | (reg & 0x1FFF);  // Write back only PA0–PA12
-			HAL_Delay(ms);
-		}
-	}
+// Redirect printf to UART
+int _write(int file, char *ptr, int len) {
+	HAL_UART_Transmit(&huart1, (const uint8_t*) ptr, (uint16_t) len, HAL_MAX_DELAY);
+	return HAL_OK;
 }
 
 void LedTest(uint32_t colorRaw, uint32_t ms) {
@@ -120,30 +114,31 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_ADC1_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-  LedInit();
+
+  // Build Print Build Time
+  printf(COLOR_MAGENTA "Build time: " __DATE__ " " __TIME__ "\r\n");
+  printf(COLOR_MAGENTA "Hardware version: " HW_VERSION "\r\n");
+  printf(COLOR_MAGENTA "Software version: " SW_VERSION "\r\n");
+
+
+  // Turn on 3.3V (LED power)
+  HAL_GPIO_WritePin(EN_3V3_GPIO_Port, EN_3V3_Pin, 1);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	  LedOneByOne(100);
 
-	  LedTest(0x0000, 500); // Black
+	  LedTest(0x1240, 2000); // Red
+	  LedTest(0x0920, 2000); // Green
+	  LedTest(0x0490, 2000); // Blue
 
-	  LedTest(0x1240, 1000); // Red
-	  LedTest(0x0920, 1000); // Green
-	  LedTest(0x0490, 1000); // Blue
-
-	  LedTest(0x1B60, 1000); // Yellow
-	  LedTest(0x0DB0, 1000); // Cyan
-	  LedTest(0x16D0, 1000); // Magenta
-
-	  LedTest(0x1FF0, 1000); // White
-	  LedTest(0x0000, 500); // Black
+	  LedTest(0x1FF0, 2000); // White
+	  LedTest(0x0000, 2000); // Black
 
 
     /* USER CODE END WHILE */
@@ -192,7 +187,11 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+void HAL_GPIO_EXTI_Rising_Callback(uint16_t GPIO_Pin) {
+	if(GPIO_Pin == BTN_Pin) {
+		printf(COLOR_CYAN "Button pressed\r\n");
+	}
+}
 /* USER CODE END 4 */
 
 /**
