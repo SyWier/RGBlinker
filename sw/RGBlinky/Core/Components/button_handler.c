@@ -20,11 +20,12 @@
 Button userBtn;
 bool animationDebugMode = false;
 
-const uint8_t white[] = { FILL_RGB(255, 255, 255) };
+static const uint8_t white[] = { FILL_RGB(255, 255, 255) };
 
 static inline uint8_t btn_level(Button *b) {
 	return HAL_GPIO_ReadPin(b->port, b->pin);  // assumes active-low push-button
 }
+
 static inline uint8_t btn_elapsed(Button *b, uint32_t duration_ms) {
 	if( (HAL_GetTick() - b->t_stamp) < duration_ms) {
 		return 0;
@@ -32,6 +33,7 @@ static inline uint8_t btn_elapsed(Button *b, uint32_t duration_ms) {
 		return 1;
 	}
 }
+
 static inline void btn_set_state(Button *b, btn_state_t new_state, const char* msg) {
 	log_message(LOG_DBG, "BTN", msg);
     b->state = new_state;
@@ -50,6 +52,7 @@ void btn_single_click() {
 		Led_Generate_Buffer(white);
 	}
 }
+
 void btn_double_click() {
 	if(animationDebugMode == 0) {
 		Animation_Prev();
@@ -67,14 +70,17 @@ void btn_single_to_long() {
 	animationFlag = 0;
 	Led_Fill_Buffer(0x1FFF);
 }
+
 void btn_long_to_extra() {
 	// Turn on all LEds
 	Led_Generate_Buffer(white);
 //	Led_Test(0x1FF0);
 }
+
 void btn_long_press() {
 	PowerOff();
 }
+
 void btn_extra_press() {
 	animationDebugMode = !animationDebugMode;
 	animationFlag = !animationDebugMode;
@@ -98,7 +104,6 @@ void Button_Init(Button *b) {
  * 										(idle)	<-	|  LONG  |  ->	| EXTRA  | -> (idle) *
  * 													+--------+		+--------+			 *
  * ===================================================================================== */
-
 void Button_Tick(Button *b) {
 	if(b->is_initialized == 0) {
 		return;

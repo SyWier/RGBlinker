@@ -37,7 +37,7 @@ extern "C" {
 #define HW_VERSION "hw-v1.0"
 #define SW_VERSION "sw-v1.1"
 
-extern bool tickFlag;
+extern volatile bool tickFlag;
 
 /* USER CODE END Includes */
 

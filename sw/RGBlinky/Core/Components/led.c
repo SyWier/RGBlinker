@@ -33,8 +33,6 @@ const uint8_t gamma_lut[256] = {
 };
 
 // Physical layout to logical layout
-const uint8_t log_lut[LED_CNT] = { 0, 1, 2, 33, 34, 35, 24, 25, 26, 15, 16, 17, 6, 7, 8, 30, 31, 32, 21, 22, 23, 12, 13, 14, 3, 4, 5, 27, 28, 29, 18, 19, 20, 9, 10, 11 };
-
 const uint8_t row_lut[LED_CNT] = { 0, 0, 0, 3, 3, 3, 2, 2, 2, 1, 1, 1, 0, 0, 0, 3, 3, 3, 2, 2, 2, 1, 1, 1, 0, 0, 0, 3, 3, 3, 2, 2, 2, 1, 1, 1 };
 const uint8_t col_lut[LED_CNT] = { 0, 1, 2, 6, 7, 8, 6, 7, 8, 6, 7, 8, 6, 7, 8, 3, 4, 5, 3, 4, 5, 3, 4, 5, 3, 4, 5, 0, 1, 2, 0, 1, 2, 0, 1, 2 };
 
@@ -61,7 +59,8 @@ void Led_Fill_Buffer(uint16_t color) {
 #define ANODE_PIN(row)     (1U << (row))
 #define CATHODE_PIN(col)   (1U << ((col) + LED_ROWS))
 
-__attribute__((optimize("-O2"))) void Led_Generate_Buffer(const uint8_t frame[LED_CNT]) {
+__attribute__((optimize("-O2")))
+void Led_Generate_Buffer(const uint8_t frame[LED_CNT]) {
 	// Delete buffer (keep upper bits)
 	// LED anode, cathode HIGH -> Turn OFF
 	uint16_t reg = GPIOA->ODR | 0x1FFF;
@@ -73,12 +72,10 @@ __attribute__((optimize("-O2"))) void Led_Generate_Buffer(const uint8_t frame[LE
 	for(uint8_t i = 0; i < LED_CNT; i++) {
 		uint8_t pwm = frame[i];
 		pwm = gamma_lut[pwm]; // Gamma correction
-//		pwm = pwm >> RGB_BUFFER_SCALE; // Scale down to buffer
 
+		// Scale and round pwm value
 		uint8_t brightnress_lut[] = {255, 128, 64, 32, 16, 8};
-
 		pwm = ((pwm * brightnress_lut[RGB_BUFFER_SCALE + RgbBrigntnessScale] ) + 255 ) >> 8;
-//		pwm = pwm >> RgbBrigntnessScale; // Scale down brightness
 
 		if (pwm > LED_PWM_MAX) { //Trim to max
 			pwm = LED_PWM_MAX;

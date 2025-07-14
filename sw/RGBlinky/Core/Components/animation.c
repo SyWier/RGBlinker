@@ -37,6 +37,14 @@ const LedFrame_t love[] = {
 	{add, {FILL_RGB(10, 0, 10)} },
 };
 
+const LedFrame_t black[] = {
+	{load, { FILL_RGB(0, 0, 0) } },
+};
+
+const LedFrame_t white[] = {
+	{load, { FILL_RGB(255, 255, 255) } },
+};
+
 const LedFrame_t heart[] = {
 	{load, { FILL_RED(63) } },
 	{repeat, { 20 } },
@@ -156,6 +164,8 @@ const LedFrame_t chaos[] = {
 // Should be minimum 50ms/frame
 LedAnimation_t animations[] = {
 	{ ANIMATION(love, 50) },
+	{ ANIMATION(black, 500) },
+	{ ANIMATION(white, 500) },
 	{ ANIMATION(fairy, 100) },
 	{ ANIMATION(heart, 50) },
 	{ ANIMATION(hue_circle, 100) },
@@ -188,6 +198,7 @@ bool animationFlag = 0;;
 void load(const uint8_t* data) {
 	memcpy(Animator.pwmBuffer, data, LED_CNT);
 }
+
 void add(const uint8_t* data) {
 	for(int i = 0; i < LED_CNT; i++) {
 		Animator.pwmBuffer[i] += (int8_t)data[i];

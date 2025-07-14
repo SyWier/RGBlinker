@@ -38,7 +38,7 @@ int _write(int file, char *ptr, int len) {
 	return HAL_OK;
 }
 
-bool tickFlag = 0;
+volatile bool tickFlag = 0;
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
