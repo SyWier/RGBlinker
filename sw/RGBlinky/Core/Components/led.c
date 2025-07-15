@@ -10,6 +10,7 @@
 uint16_t LedBuffer[BUFFER_COUNT][BUFFER_SIZE];
 bool BufferSelect = 0;
 uint8_t RgbBrigntnessScale = 2;
+uint8_t _RgbBrigntnessScale_old = 2;
 
 // Gamma brightness lookup table <https://victornpb.github.io/gamma-table-generator>
 // gamma = 1.50 steps = 256 range = 0-255

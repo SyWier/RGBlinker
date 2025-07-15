@@ -11,6 +11,7 @@
 #include "adc.h"
 #include "led.h"
 #include "stm32c0xx_hal.h"
+#include "eeprom.h"
 
 void Battery_Init() {
 	// Start  and initialize ADC conversion
@@ -125,6 +126,9 @@ void Battery_Gauge() {
 
 void PowerOff() {
 	log_message(LOG_IMP, "BATT", "Power off...zzz...");
+
+	// Save RgbBrightness value
+	eeprom_write();
 
 	// Pull down 3.3V ernable pin
 	HAL_PWREx_EnableGPIOPullDown(PWR_GPIO_B, PWR_GPIO_BIT_3);

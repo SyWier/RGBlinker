@@ -31,6 +31,7 @@
 #include "battery.h"
 #include "button_handler.h"
 #include "animation.h"
+#include "eeprom.h"
 
 // Redirect printf to UART
 int _write(int file, char *ptr, int len) {
@@ -122,6 +123,10 @@ int main(void)
 		log_message(LOG_INF, "MAIN", "Device powered up.");
 	}
 	__HAL_PWR_CLEAR_FLAG(PWR_FLAG_WUF3);
+
+
+	// EEPROM_Emul
+	eeprom_init();
 
 	/* Init components */
 	Led_Init();
