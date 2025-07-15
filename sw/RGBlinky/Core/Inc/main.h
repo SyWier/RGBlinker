@@ -35,7 +35,7 @@ extern "C" {
 
 #define HW_V1_0
 #define HW_VERSION "hw-v1.0"
-#define SW_VERSION "sw-v1.1"
+#define SW_VERSION "sw-v1.2"
 
 extern volatile bool tickFlag;
 
