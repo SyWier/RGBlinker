@@ -6,6 +6,7 @@
  */
 
 #include "led.h"
+#include "log.h"
 
 uint16_t LedBuffer[BUFFER_COUNT][BUFFER_SIZE];
 bool BufferSelect = 0;
@@ -38,6 +39,7 @@ const uint8_t row_lut[LED_CNT] = { 0, 0, 0, 3, 3, 3, 2, 2, 2, 1, 1, 1, 0, 0, 0, 
 const uint8_t col_lut[LED_CNT] = { 0, 1, 2, 6, 7, 8, 6, 7, 8, 6, 7, 8, 6, 7, 8, 3, 4, 5, 3, 4, 5, 3, 4, 5, 3, 4, 5, 0, 1, 2, 0, 1, 2, 0, 1, 2 };
 
 void Led_Init() {
+	log_message(LOG_INF, "LED", "Init LEDs");
 	// Init LED buffer (turn off all LEDs by default))
 	// The last values are unused for optimalization reasons
 	uint16_t reg = GPIOA->ODR | 0x1FFF;

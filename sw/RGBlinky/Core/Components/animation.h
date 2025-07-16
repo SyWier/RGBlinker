@@ -44,6 +44,7 @@ typedef struct {
 
 extern LedAnimator_t Animator;
 extern bool animationFlag;
+extern uint8_t _animationIndex_old;
 
 void load(const uint8_t* data);
 void add(const uint8_t* data);

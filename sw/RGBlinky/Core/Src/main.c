@@ -126,7 +126,7 @@ int main(void)
 
 
 	// EEPROM_Emul
-	eeprom_init();
+	eeprom_start();
 
 	/* Init components */
 	Led_Init();

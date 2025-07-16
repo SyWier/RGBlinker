@@ -14,6 +14,7 @@
 #include "eeprom.h"
 
 void Battery_Init() {
+	log_message(LOG_INF, "BATTERY", "Init Battery");
 	// Start  and initialize ADC conversion
 	if (HAL_ADCEx_Calibration_Start(&hadc1) != HAL_OK) {
 		Error_Handler(); /* Calibration Error */
@@ -128,7 +129,7 @@ void PowerOff() {
 	log_message(LOG_IMP, "BATT", "Power off...zzz...");
 
 	// Save RgbBrightness value
-	eeprom_write();
+	eeprom_end();
 
 	// Pull down 3.3V ernable pin
 	HAL_PWREx_EnableGPIOPullDown(PWR_GPIO_B, PWR_GPIO_BIT_3);
