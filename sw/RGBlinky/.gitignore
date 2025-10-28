@@ -1,3 +1,6 @@
 # STM32CubeIDE build and debug output
 /Debug/
 /release/
+/.vscode/
+/.settings/
+/.metadata/
